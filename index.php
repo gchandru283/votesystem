@@ -22,16 +22,16 @@ if (isset ($_SESSION['voter'])) {
 
 			<form action="login.php" method="POST">
 				<div class="form-group has-feedback">
-					<input type="text" class="form-control" name="voter" placeholder="Voter's ID" required>
-					<span class="glyphicon glyphicon-user form-control-feedback"></span>
+					<input type="text" class="form-control" name="voter" placeholder="Voter's Key" required>
+					<span class="glyphicon glyphicon-user form-control-feedback" style="transform: scale(1.2);"></span>
 				</div>
 				<div class="form-group has-feedback">
 					<input type="password" class="form-control" name="password" placeholder="Password" required>
-					<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+					<span class="glyphicon glyphicon-lock form-control-feedback" style="transform: scale(1.2);"></span>
 				</div>
 				<div class="form-group has-feedback text-center">
 					<?php
-					$sql = "SELECT name FROM captcha";
+					$sql = "SELECT name FROM captcha ORDER BY RAND() LIMIT 1";
 					$vquery = $conn->query($sql);
 					if ($vquery) {
 						$row = $vquery->fetch_assoc();
@@ -41,13 +41,13 @@ if (isset ($_SESSION['voter'])) {
 						echo "Error fetching captcha image";
 					}
 					?>
-					<input type="password" class="form-control " name="Captcha" placeholder="Enter Captcha" required>
+					<input type="text" class="form-control " name="Captcha" placeholder="Enter Captcha" required>
 
 				</div>
 				<div class="row">
 					<div class="col-xs-4 col-xs-offset-4">
 						<button type="submit" class="btn btn-primary btn-block btn-rounded" name="login"><i
-								class="fa fa-sign-in"></i> Sign In</button>
+								class="fa fa-sign-in"></i> &nbsp; Sign In</button>
 					</div>
 				</div>
 			</form>
@@ -62,17 +62,15 @@ if (isset ($_SESSION['voter'])) {
 			unset($_SESSION['error']);
 		}
 		?>
+		<div style="font-size: 16px; padding-top:10px">
+			<p>
+				<center><b>NOTE:</b> To register <a href="register.php">Click here</a>.
+				</center>
+			</p>
+		</div>
 	</div>
 
 	<?php include 'includes/scripts.php' ?>
 </body>
 
-<footer>
-	<p>
-		<center><b>NOTE:</b> To Create New Voter's ID and Password- Login to Admin Panel, Check Voters List and Add New
-			Account. The System Automatically Generates VotersID
-	</p>
-	</center>
-	</div>
-
-	</html>
+</html>

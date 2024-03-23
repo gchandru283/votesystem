@@ -43,33 +43,40 @@
         <div class="row">
           <div class="col-xs-12">
             <div class="box">
-              <div class="box-header with-border">
-                <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i>
-                  New</a>
-              </div>
+
               <div class="box-body">
                 <table id="example1" class="table table-bordered">
                   <thead>
-                    <th>Firstname</th>
-                    <th>Lastname</th>
-                    <th>Voters ID</th>
-                    <th>Tools</th>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Date of Birth</th>
+                    <th>Age</th>
+                    <th>Mobile No</th>
+                    <th>Aadhar No</th>
+                    <th>Voter ID</th>
+                    <th>
+                      <center>Tools</center>
+                    </th>
+
                   </thead>
                   <tbody>
                     <?php
-                    $sql = "SELECT * FROM voters";
+                    $sql = "SELECT * FROM registered";
                     $query = $conn->query($sql);
                     while ($row = $query->fetch_assoc()) {
-                      $image = (!empty ($row['photo'])) ? '../images/' . $row['photo'] : '../images/profile.jpg';
                       echo "
                         <tr>
                         <td>" . $row['firstname'] . "</td>
                           <td>" . $row['lastname'] . "</td>
-                          <td>" . $row['voters_id'] . "</td>
-                          <td>
-                            <button class='btn btn-success btn-sm edit btn-flat' data-id='" . $row['id'] . "'><i class='fa fa-edit'></i> Edit</button>
-                            <button class='btn btn-danger btn-sm delete btn-flat' data-id='" . $row['id'] . "'><i class='fa fa-trash'></i> Delete</button>
-                          </td>
+                          <td>" . $row['dob'] . "</td>
+                          <td>" . $row['age'] . "</td>
+                          <td>" . $row['mobile'] . "</td>
+                          <td>" . $row['aadhar'] . "</td>
+                          <td>" . $row['voterid'] . "</td>
+                          <td><center>
+                            <button class='btn btn-success btn-sm add_registered' data-id='" . $row['id'] . "'><i class='glyphicon glyphicon-plus-sign'></i> Add</button>
+                            <button class='btn btn-danger btn-sm remove_registered' data-id='" . $row['id'] . "'><i class='glyphicon glyphicon-minus-sign'></i> Remove</button>
+                            </center></td>
                         </tr>
                       ";
                     }
@@ -89,16 +96,16 @@
   <?php include 'includes/scripts.php'; ?>
   <script>
     $(function () {
-      $(document).on('click', '.edit', function (e) {
-        e.preventDefault();
-        $('#edit').modal('show');
-        var id = $(this).data('id');
-        getRow(id);
-      });
 
       $(document).on('click', '.delete', function (e) {
         e.preventDefault();
         $('#delete').modal('show');
+        var id = $(this).data('id');
+        getRow(id);
+      });
+
+      $(document).on('click', '.photo', function (e) {
+        e.preventDefault();
         var id = $(this).data('id');
         getRow(id);
       });

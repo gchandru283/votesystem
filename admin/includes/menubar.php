@@ -21,6 +21,8 @@
       <li class=""><a href="votes.php"><span class="glyphicon glyphicon-lock"></span> <span>Votes</span></a></li>
       <li class="header">MANAGE</li>
       <li class=""><a href="voters.php"><i class="fa fa-users"></i> <span>Voters</span></a></li>
+      <li class=""><a href="registered.php"><i class="glyphicon glyphicon-info-sign"></i> <span>Registered</span></a>
+      </li>
       <li class=""><a href="positions.php"><i class="fa fa-tasks"></i> <span>Positions</span></a></li>
       <li class=""><a href="candidates.php"><i class="fa fa-black-tie"></i> <span>Candidates</span></a></li>
       <li class="header">SETTINGS</li>

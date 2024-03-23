@@ -6,6 +6,18 @@ if (isset ($_SESSION['admin'])) {
 ?>
 <?php include 'includes/header.php'; ?>
 
+<style>
+	body{
+      height: 100vh;
+      overflow: hidden;
+    }
+	@media only screen and (min-width: 768px) {
+      body {
+        transform: translateY(-10%);
+      }
+    }
+	</style>
+
 <body class="hold-transition login-page">
 	<div class="login-box">
 		<div class="login-logo">

@@ -19,7 +19,7 @@
       <!-- Main content -->
       <section class="content">
         <?php
-        if (isset ($_SESSION['error'])) {
+        if (isset($_SESSION['error'])) {
           echo "
             <div class='alert alert-danger alert-dismissible'>
               <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
@@ -29,7 +29,7 @@
           ";
           unset($_SESSION['error']);
         }
-        if (isset ($_SESSION['success'])) {
+        if (isset($_SESSION['success'])) {
           echo "
             <div class='alert alert-success alert-dismissible'>
               <button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
@@ -47,12 +47,15 @@
                 <a href="#addnew" data-toggle="modal" class="btn btn-primary btn-sm btn-flat"><i class="fa fa-plus"></i>
                   New</a>
               </div>
+
               <div class="box-body">
                 <table id="example1" class="table table-bordered">
                   <thead>
                     <th>Firstname</th>
                     <th>Lastname</th>
-                    <th>Voters ID</th>
+                    <th>Photo</th>
+                    <th>Mobile No</th>
+                    <th>Voters Key</th>
                     <th>Tools</th>
                   </thead>
                   <tbody>
@@ -60,12 +63,17 @@
                     $sql = "SELECT * FROM voters";
                     $query = $conn->query($sql);
                     while ($row = $query->fetch_assoc()) {
-                      $image = (!empty ($row['photo'])) ? '../images/' . $row['photo'] : '../images/profile.jpg';
+                      $image = (!empty($row['photo'])) ? '../images/' . $row['photo'] : '../images/profile.jpg';
                       echo "
                         <tr>
                         <td>" . $row['firstname'] . "</td>
                           <td>" . $row['lastname'] . "</td>
-                          <td>" . $row['voters_id'] . "</td>
+                          <td>
+                            <img src='" . $image . "' width='35px' height='35px'>
+                            <a href='#edit_photo' data-toggle='modal' class='pull-right photo' data-id='" . $row['id'] . "'><span class='fa fa-edit'></span></a>
+                          </td>
+                          <td>" . $row['mobile'] . "</td>
+                          <td>" . $row['voters_key'] . "</td>
                           <td>
                             <button class='btn btn-success btn-sm edit btn-flat' data-id='" . $row['id'] . "'><i class='fa fa-edit'></i> Edit</button>
                             <button class='btn btn-danger btn-sm delete btn-flat' data-id='" . $row['id'] . "'><i class='fa fa-trash'></i> Delete</button>
@@ -102,6 +110,11 @@
         var id = $(this).data('id');
         getRow(id);
       });
+      $(document).on('click', '.photo', function (e) {
+        e.preventDefault();
+        var id = $(this).data('id');
+        getRow(id);
+      });
 
     });
 
@@ -116,6 +129,7 @@
           $('#edit_firstname').val(response.firstname);
           $('#edit_lastname').val(response.lastname);
           $('#edit_password').val(response.password);
+          $('#edit_mobile').val(response.mobile);
           $('.fullname').html(response.firstname + ' ' + response.lastname);
         }
       });

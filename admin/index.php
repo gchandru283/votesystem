@@ -7,44 +7,21 @@ if (isset ($_SESSION['admin'])) {
 <?php include 'includes/header.php'; ?>
 
 <style>
-	.body {
-		height: 100vh;
-		overflow: hidden;
-	}
-
-	.login-logo {
-		font-size: 30px;
-		margin-top: 25px;
-	}
-
-	.sub-name {
-		color: #563D7C;
-		font-size: 28px;
-	}
-
+	body{
+      height: 100vh;
+      overflow: hidden;
+    }
 	@media only screen and (min-width: 768px) {
-		.login-box {
-			transform: translateY(-12%);
-		}
-
-		.login-logo {
-			font-size: 38px;
-			margin-top: 30px;
-		}
-
-		.sub-name {
-			color: #563D7C;
-			font-size: 35px;
-		}
-
-	}
-</style>
+      body {
+        transform: translateY(-10%);
+      }
+    }
+	</style>
 
 <body class="hold-transition login-page">
-
 	<div class="login-box">
 		<div class="login-logo">
-			<b>Online Voting System <span class="sub-name"> &nbsp;Admin login form</span></b>
+			<b>Voting System</b>
 		</div>
 
 		<div class="login-box-body">
@@ -77,17 +54,14 @@ if (isset ($_SESSION['admin'])) {
 			unset($_SESSION['error']);
 		}
 		?>
-		<div style="font-size: 16px; padding-top:40px">
-			<p>
-				<center><b>NOTE:</b> This is for Admin. For Citizen login, <a href="../index.php">Click here</a>.
-					<center>
-			</p>
-
-		</div>
 	</div>
 
 	<?php include 'includes/scripts.php' ?>
 </body>
-
+<footer>
+	<p>
+		<center>aa<center>
+	</p>
+</footer>
 
 </html>

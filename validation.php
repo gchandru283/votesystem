@@ -34,21 +34,3 @@ if (isset ($_POST['validation'])) {
 header('location: register.php');
 
 ?>
-
-
-<?php
-// Check if the file was uploaded without errors
-if ($_FILES["photo"]["error"] == UPLOAD_ERR_OK) {
-    $uploadDir = "uploads/"; // Specify the directory where you want to store the images
-    $uploadFile = $uploadDir . basename($_FILES["photo"]["name"]);
-
-    // Move the uploaded file to the specified directory
-    if (move_uploaded_file($_FILES["photo"]["tmp_name"], $uploadFile)) {
-        echo "The file ". basename( $_FILES["photo"]["name"]). " has been uploaded.";
-    } else {
-        echo "Sorry, there was an error uploading your file.";
-    }
-} else {
-    echo "Error: " . $_FILES["photo"]["error"];
-}
-?>

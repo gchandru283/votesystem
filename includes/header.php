@@ -27,6 +27,11 @@
 
   <style>
 
+    body{
+      height: 100vh;
+      overflow: hidden;
+    }
+
     .mt20 {
       margin-top: 20px;
     }
@@ -37,6 +42,12 @@
 
     #candidate_list {
       margin-top: 20px;
+    }
+
+    @media only screen and (min-width: 768px) {
+      body {
+        transform: translateY(-10%);
+      }
     }
 
     #candidate_list ul {

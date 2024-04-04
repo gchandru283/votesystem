@@ -1,18 +1,20 @@
 <?php
-include 'includes/session.php';
+	include 'includes/session.php';
 
-if (isset($_POST['delete'])) {
-	$id = $_POST['id'];
-	$sql = "DELETE FROM `registered` WHERE id = '$id'";
-	if ($conn->query($sql)) {
-		$_SESSION['success'] = 'Pupil deleted successfully';
-	} else {
-		$_SESSION['error'] = $conn->error;
+	if(isset($_POST['delete'])){
+		$id = $_POST['id'];
+		$sql = "DELETE FROM registered WHERE id = '$id'";
+		if($conn->query($sql)){
+			$_SESSION['success'] = 'Voter deleted successfully';
+		}
+		else{
+			$_SESSION['error'] = $conn->error;
+		}
 	}
-} else {
-	$_SESSION['error'] = 'Select item to delete first';
-}
+	else{
+		$_SESSION['error'] = 'Select item to delete first';
+	}
 
-header('location: registered.php');
-
+	header('location: voters.php');
+	
 ?>

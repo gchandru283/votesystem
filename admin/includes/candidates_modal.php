@@ -1,4 +1,5 @@
 <!-- Description -->
+<?php include'../../encryption.php'; ?>
 <div class="modal fade" id="platform">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -43,6 +44,27 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="mobile" class="col-sm-3 control-label">Mobile No</label>
+
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="mobile" name="mobile" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="aadhar" class="col-sm-3 control-label">Aadhar No</label>
+
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="aadhar" name="aadhar" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="voterid" class="col-sm-3 control-label">Voter ID</label>
+
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="voterid" name="voterid" required>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="position" class="col-sm-3 control-label">Position</label>
 
                     <div class="col-sm-9">
@@ -53,7 +75,7 @@
                           $query = $conn->query($sql);
                           while($row = $query->fetch_assoc()){
                             echo "
-                              <option value='".$row['id']."'>".$row['description']."</option>
+                              <option value='".$row['id']."'>".decryptData($row['description'])."</option>
                             ";
                           }
                         ?>
@@ -64,14 +86,14 @@
                     <label for="photo" class="col-sm-3 control-label">Photo</label>
 
                     <div class="col-sm-9">
-                      <input type="file" id="photo" name="photo">
+                      <input type="file" id="photo" name="photo" accept="image/*">
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="platform" class="col-sm-3 control-label">Platform</label>
 
                     <div class="col-sm-9">
-                      <textarea class="form-control" id="platform" name="platform" rows="7"></textarea>
+                      <textarea class="form-control" id="platform" name="platform" rows="3"></textarea>
                     </div>
                 </div>
             </div>
@@ -91,7 +113,7 @@
             <div class="modal-header">
               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-              <h4 class="modal-title"><b>Edit Voter</b></h4>
+              <h4 class="modal-title"><b>Edit Candidate</b></h4>
             </div>
             <div class="modal-body">
               <form class="form-horizontal" method="POST" action="candidates_edit.php">
@@ -111,6 +133,27 @@
                     </div>
                 </div>
                 <div class="form-group">
+                    <label for="edit_mobile" class="col-sm-3 control-label">Mobile No</label>
+
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="edit_mobile" name="mobile" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit_aadhar" class="col-sm-3 control-label">Aadhar No</label>
+
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="edit_aadhar" name="aadhar" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="edit_voterid" class="col-sm-3 control-label">Voter ID</label>
+
+                    <div class="col-sm-9">
+                      <input type="text" class="form-control" id="edit_voterid" name="voterid" required>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label for="edit_position" class="col-sm-3 control-label">Position</label>
 
                     <div class="col-sm-9">
@@ -121,7 +164,7 @@
                           $query = $conn->query($sql);
                           while($row = $query->fetch_assoc()){
                             echo "
-                              <option value='".$row['id']."'>".$row['description']."</option>
+                              <option value='".$row['id']."'>".decryptData($row['description'])."</option>
                             ";
                           }
                         ?>
@@ -132,7 +175,7 @@
                     <label for="edit_platform" class="col-sm-3 control-label">Platform</label>
 
                     <div class="col-sm-9">
-                      <textarea class="form-control" id="edit_platform" name="platform" rows="7"></textarea>
+                      <textarea class="form-control" id="edit_platform" name="platform" rows="3"></textarea>
                     </div>
                 </div>
             </div>
@@ -187,7 +230,7 @@
                     <label for="photo" class="col-sm-3 control-label">Photo</label>
 
                     <div class="col-sm-9">
-                      <input type="file" id="photo" name="photo" required>
+                      <input type="file" id="photo" name="photo" required accept="image/*">
                     </div>
                 </div>
             </div>

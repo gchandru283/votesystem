@@ -1,6 +1,7 @@
-<?php include 'includes/session.php'; ?>
-<?php include 'includes/slugify.php'; ?>
-<?php include 'includes/header.php'; ?>
+<?php include 'includes/session.php'; 
+      include 'includes/slugify.php'; 
+      include 'includes/header.php';
+      include_once '../encryption.php'; ?>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -149,11 +150,11 @@
             <div class='col-sm-6'>
               <div class='box box-solid'>
                 <div class='box-header with-border'>
-                  <h4 class='box-title'><b>".$row['description']."</b></h4>
+                  <h4 class='box-title'><b>".decryptData($row['description'])."</b></h4>
                 </div>
                 <div class='box-body'>
                   <div class='chart'>
-                    <canvas id='".slugify($row['description'])."' style='height:200px'></canvas>
+                    <canvas id='".slugify(decryptData($row['description']))."' style='height:200px'></canvas>
                   </div>
                 </div>
               </div>

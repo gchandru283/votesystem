@@ -29,6 +29,8 @@
 <!-- AdminLTE App -->
 <script src="../dist/js/adminlte.min.js"></script>
 <!-- Active Script -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
 <script>
 $(function(){
 	/** add active class and stay opened when selected */

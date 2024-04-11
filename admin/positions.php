@@ -1,5 +1,9 @@
-<?php include 'includes/session.php'; ?>
-<?php include 'includes/header.php'; ?>
+<?php 
+  include 'includes/session.php'; 
+  include 'includes/header.php'; 
+  include '../encryption.php';
+  ?>
+
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -61,11 +65,13 @@
                     $sql = "SELECT * FROM positions ORDER BY priority ASC";
                     $query = $conn->query($sql);
                     while($row = $query->fetch_assoc()){
+                      $description = decryptData($row['description']);
+                      $max_vote = decryptData($row['max_vote']);
                       echo "
                         <tr>
                           <td class='hidden'></td>
-                          <td>".$row['description']."</td>
-                          <td>".$row['max_vote']."</td>
+                          <td>".$description."</td>
+                          <td>".$max_vote."</td>
                           <td>
                             <button class='btn btn-success btn-sm edit btn-flat' data-id='".$row['id']."'><i class='fa fa-edit'></i> Edit</button>
                             <button class='btn btn-danger btn-sm delete btn-flat' data-id='".$row['id']."'><i class='fa fa-trash'></i> Delete</button>
@@ -87,6 +93,9 @@
   <?php include 'includes/positions_modal.php'; ?>
 </div>
 <?php include 'includes/scripts.php'; ?>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
 <script>
 $(function(){
   $(document).on('click', '.edit', function(e){
@@ -113,12 +122,27 @@ function getRow(id){
     dataType: 'json',
     success: function(response){
       $('.id').val(response.id);
-      $('#edit_description').val(response.description);
-      $('#edit_max_vote').val(response.max_vote);
-      $('.description').html(response.description);
+      var decrypted_description = decryptData(response.description);
+      var decrypted_max_vote = decryptData(response.max_vote);
+      $('#edit_description').val(decrypted_description);
+      $('#edit_max_vote').val(decrypted_max_vote);
+      $('.description').html(decrypted_description);
     }
   });
 }
+
+function decryptData(data) {
+  console.log("Decrypting.. "+data)
+    var key = CryptoJS.enc.Hex.parse('acdb62d64e2029a1873cd28ef52c6bc8c2e1b486400d5c7b40e741f1e28bdf3a');
+    var cipher = "aes-256-cbc";
+    var dataBytes = CryptoJS.enc.Base64.parse(data);
+    var iv = dataBytes.clone().words.slice(0, 4); // Extract IV from the data
+    var encrypted = dataBytes.clone().words.slice(4); // Extract encrypted data
+    var decrypted = CryptoJS.AES.decrypt({ciphertext: CryptoJS.lib.WordArray.create(encrypted)}, key, {iv: CryptoJS.lib.WordArray.create(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
+    return decrypted.toString(CryptoJS.enc.Utf8);
+    console.log("returning.."+decrypted.toString(CryptoJS.enc.Utf8));
+}
+
 </script>
 </body>
 </html>

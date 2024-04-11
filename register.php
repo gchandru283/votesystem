@@ -1,5 +1,6 @@
 <?php include 'includes/header.php'; ?>
 <?php include 'includes/conn.php'; ?>
+<?php include './encryption.php'; ?>
 <?php session_start(); ?>
 
 <body class="hold-transition register-page">
@@ -62,8 +63,8 @@
 					<span class="fa fa-id-card form-control-feedback" style="transform: scale(1.3);"></span>
 				</div>
 				<div class="form-group has-feedback">
-					<input type="text" class="form-control" name="voterid" placeholder="Voter ID" required>
-					<span class="fa fa-id-card form-control-feedback" style="transform: scale(1.3);"></span>
+					<input type="text" class="form-control" id="uppercaseInput" name="voterid" placeholder="Voter ID" required>
+					<span class="fa fa-id-card-o form-control-feedback" style="transform: scale(1.3);"></span>
 				</div>
 				<div class="form-group has-feedback">
 					<label for="photo">Select your Image (< 1 MB) :</label><br />
@@ -117,35 +118,14 @@
 
 	<?php include 'includes/scripts.php' ?>
 
-	<!-- <script>
-		document.getElementById('myForm').addEventListener('submit', function (event) {
-			var mobile = document.getElementById('mobile').value;
-			var aadhar = document.getElementById('aadhar').value;
-			var voterid = document.getElementById('voterid').value;
-
-			if (mobile.length !== 10 || isNaN(mobile)) {
-				alert('Mobile number should be a 10-digit number.');
-				event.preventDefault();
-			}
-
-			if (aadhar.length !== 12 || isNaN(aadhar)) {
-				alert('Aadhar number should be a 12-digit number.');
-				event.preventDefault();
-			}
-
-			if (!voterid.match(/^[a-zA-Z]{3}\d{7}$/)) {
-				alert('Voter ID should be 3 characters followed by 7 numbers.');
-				event.preventDefault();
-			}
-		});
-	</script> -->
-
 
 	<?php
 	if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		// Retrieve form data
 		$fname = $_POST['fname'];
 		$lname = $_POST['lname'];
+		$captcha = $_POST['captcha'];
+		$captchaName = $_POST['captchaName'];
 		$dob = $_POST['dob'];
 		$mobile = $_POST['mobile'];
 		$aadhar = $_POST['aadhar'];
@@ -157,54 +137,112 @@
 		$interval = $today->diff($dob_date);
 		$age = $interval->y;
 
-		// Process image upload
-		$target_dir = "uploads/";
-		$photo_name = $_POST['voterid'] . '_' . basename($_FILES["photo"]["name"]);
-		$target_file = $target_dir . $photo_name;
-		$uploadOk = 1;
-		$imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+		if (isset($_FILES["photo"]["tmp_name"])) {
+            $check = getimagesize($_FILES["photo"]["tmp_name"]);
+            if ($check === false) {
+                $_SESSION['error'] = 'File is not an image.';
+                header('location: voters.php');
+                exit();
+            }
+        }
+        
+        // Check if image file is a valid image
+    if (isset($_FILES["photo"]["tmp_name"])) {
+        $check = getimagesize($_FILES["photo"]["tmp_name"]);
+        if ($check === false) {
+            $_SESSION['error'] = 'File is not an image.';
+            header('location: voters.php');
+            exit();
+        }
+    }
 
-		// Check if image file is a actual image or fake image
-		$check = getimagesize($_FILES["photo"]["tmp_name"]);
-		if ($check !== false) {
-			$uploadOk = 1;
-		} else {
-			$_SESSION['error'] = "File is not an image.";
-			$uploadOk = 0;
-		}
+        // Check file size (limit set to 1MB)
+        if ($_FILES["photo"]["size"] > 1000000) { 
+            $_SESSION['error'] = "Sorry, your file is too large. Try uploading less than 1 MB";
+           
+        }
+    
+        $filename = $_FILES['photo']['name'];
+        $file_tmp = $_FILES['photo']['tmp_name'];
+        $new_filename = $voterid . '_' . $filename;
 
-		// Check file size
-		if ($_FILES["photo"]["size"] > 1000000) { // Adjust the size limit as per your requirement
-			$_SESSION['error'] = "Sorry, your file is too large. ";
-			$uploadOk = 0;
-		}
-
-		if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-			$_SESSION['error'] = "Sorry, only JPG, JPEG & PNG files are allowed.";
-			$uploadOk = 0;
-		}
-
-		if ($uploadOk == 0) {
-			$_SESSION['error'] = "Sorry, your file was not uploaded.";
-			// if everything is ok, try to upload file
-		} else {
-			if (move_uploaded_file($_FILES["photo"]["tmp_name"], $target_file)) {
-				// Insert into database
-				$sql = "INSERT INTO REGISTERED (firstname, lastname, dob, age, photo, mobile, aadhar, voterid) VALUES ('$fname', '$lname', '$dob', '$age', '$photo_name', '$mobile', '$aadhar', '$voterid')";
-				if ($conn->query($sql) === TRUE) {
+		if (move_uploaded_file($file_tmp, 'uploads/' . $new_filename)) {
+			// Insert into database
+			$encrypted_firstname = encryptData($fname);
+			$encrypted_lastname = encryptData($lname);
+				$encrypted_dob = encryptData($dob);
+				$encrypted_voterid = encryptData($voterid);
+				$encrypted_aadhar = encryptData($aadhar);
+				$encrypted_mobile = encryptData($mobile);
+				$encrypted_age = encryptData($age);
+				if($captchaName == $captcha . '.jpeg'){
+					$sql = "INSERT INTO REGISTERED (firstname, lastname, dob, age, photo, mobile, aadhar, voterid) VALUES ('$encrypted_firstname', '$encrypted_lastname', '$encrypted_dob', '$encrypted_age', '$new_filename', '$encrypted_mobile', '$encrypted_aadhar', '$encrypted_voterid')";
+					if ($conn->query($sql) === TRUE) {
 					$_SESSION['error'] = "Registration Successful!";
+					
 				} else {
 					$_SESSION['error'] = "Error: " . $sql . "<br>" . $conn->error;
+					
+				}}
+				else{
+					$_SESSION['error'] = "Invalid Captcha";
+					
 				}
+				
 			} else {
 				$_SESSION['error'] = "Sorry, there was an error uploading your file.";
 			}
 		}
 		// Close connection
 		$conn->close();
-	}
-	?>
+		
+		?>
 
+<script>
+	document.getElementById('uppercaseInput').addEventListener('input', function(event) {
+            var inputText = event.target.value;
+            event.target.value = inputText.toUpperCase();
+        });
+    document.getElementById('myForm').addEventListener('submit', function(event) {
+        var mobile = document.getElementsByName('mobile')[0].value;
+        var aadhar = document.getElementsByName('aadhar')[0].value;
+        var voterid = document.getElementsByName('voterid')[0].value;
+        var dob = document.getElementsByName('dob')[0].value;
+
+        if (mobile.length !== 10 || isNaN(mobile)) {
+            alert('Mobile number should be a 10-digit number.');
+            event.preventDefault();
+            return;
+        }
+
+        if (aadhar.length !== 12 || isNaN(aadhar)) {
+            alert('Aadhar number should be a 12-digit number.');
+            event.preventDefault();
+            return;
+        }
+
+        if (!voterid.match(/^[a-zA-Z]{3}\d{7}$/)) {
+            alert('Voter ID should be 3 characters followed by 7 numbers.');
+            event.preventDefault();
+            return;
+        }
+
+        if (!dob.match(/^\d{4}-\d{2}-\d{2}$/)) {
+            alert('Date of Birth should be in YYYY-MM-DD format.');
+            event.preventDefault();
+            return;
+        }
+		var captchaInput = document.getElementsByName('captcha')[0].value;
+        var captchaName = document.getElementsByName('captchaName')[0].value;
+
+        if (captchaInput !== captchaName.replace('.jpeg', '')) {
+            alert('Invalid Captcha.');
+            event.preventDefault();
+            return;
+        }
+        alert('Registration successfully completed');
+    });
+</script>
 
 </body>
 

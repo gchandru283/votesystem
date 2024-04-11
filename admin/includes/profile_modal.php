@@ -49,7 +49,7 @@
                     <label for="curr_password" class="col-sm-3 control-label">Current Password:</label>
 
                     <div class="col-sm-9">
-                      <input type="password" class="form-control" id="curr_password" name="curr_password" placeholder="input current password to save changes" required>
+                      <input type="password" class="form-control" id="curr_password" name="curr_password" placeholder="Type the current password to save changes" required>
                     </div>
                 </div>
           	</div>

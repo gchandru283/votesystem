@@ -1,5 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
+<?php include '../encryption.php'; ?>
 
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
@@ -65,26 +66,34 @@
                     $sql = "SELECT * FROM registered";
                     $query = $conn->query($sql);
                     while ($row = $query->fetch_assoc()) {
+                      $firstname = decryptData($row['firstname']);
+                      $lastname = decryptData($row['lastname']);
+                      $dob = decryptData($row['dob']);
+                      $age = decryptData($row['age']);
+                      $mobile = decryptData($row['mobile']);
+                      $aadhar = decryptData($row['aadhar']);
+                      $voterid = decryptData($row['voterid']);
+
                       $image = (!empty($row['photo'])) ? '../uploads/' . $row['photo'] : '../images/profile.jpg';
                       echo "
-                        <tr>
-                        <td>" . $row['firstname'] . "</td>
-                          <td>" . $row['lastname'] . "</td>
-                          <td>
-                            <img src='" . $image . "' width='35px' height='35px'>
-                            
-                          </td>
-                          <td>" . $row['dob'] . "</td>
-                          <td>" . $row['age'] . "</td>
-                          <td>" . $row['mobile'] . "</td>
-                          <td>" . $row['aadhar'] . "</td>
-                          <td>" . $row['voterid'] . "</td>
-                          <td><center>
-                            <button class='btn btn-success btn-sm add' data-id='" . $row['id'] . "'><i class='glyphicon glyphicon-plus-sign'></i> Add</button>
-                            <button class='btn btn-danger btn-sm delete' data-id='" . $row['id'] . "'><i class='glyphicon glyphicon-minus-sign'></i> Remove</button>
-                            </center></td>
-                        </tr>
-                      ";
+        <tr>
+            <td>" . $firstname . "</td>
+            <td>" . $lastname . "</td>
+            <td>
+                <img src='" . $image . "' width='35px' height='35px'>
+            </td>
+            <td>" . $dob . "</td>
+            <td>" . $age . "</td>
+            <td>" . $mobile . "</td>
+            <td>" . $aadhar . "</td>
+            <td>" . $voterid . "</td>
+            <td>
+            <center>
+                <button class='btn btn-success btn-sm add' data-id='" . $row['id'] . "'><i class='glyphicon glyphicon-plus-sign'></i> Add</button>
+                <button class='btn btn-danger btn-sm delete' data-id='" . $row['id'] . "'><i class='glyphicon glyphicon-minus-sign'></i> Remove</button>
+            </center>
+            </td>
+         </tr> ";
                     }
                     ?>
                   </tbody>
@@ -100,46 +109,67 @@
     <?php include 'includes/registered_modal.php'; ?>
   </div>
   <?php include 'includes/scripts.php'; ?>
-  <script>
-    $(function () {
 
-      $(document).on('click', '.add', function (e) {
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
+  <script>
+$(function () {
+    $(document).on('click', '.add', function (e) {
         e.preventDefault();
         $('#add').modal('show');
         var id = $(this).data('id');
+        console.log("Clicked add button. ID:", id);
         getRow(id);
-      });
-      $(document).on('click', '.delete', function (e) {
+    });
+    $(document).on('click', '.delete', function (e) {
         e.preventDefault();
         $('#delete').modal('show');
         var id = $(this).data('id');
+        console.log("Clicked delete button. ID:", id);
         getRow(id);
-      });
-
-      $(document).on('click', '.photo', function (e) {
+    });
+    $(document).on('click', '.photo', function (e) {
         e.preventDefault();
         var id = $(this).data('id');
+        console.log("Clicked photo button. ID:", id);
         getRow(id);
-      });
-
     });
+});
 
-    function getRow(id) {
-      $.ajax({
+function getRow(id) {
+    console.log("Fetching row with ID:", id);
+    $.ajax({
         type: 'POST',
         url: 'registered_row.php',
         data: { id: id },
         dataType: 'json',
         success: function (response) {
-          $('.id').val(response.id);
-          $('#edit_firstname').val(response.firstname);
-          $('#edit_lastname').val(response.lastname);
-          $('#edit_password').val(response.password);
-          $('.fullname').html(response.firstname + ' ' + response.lastname);
+            console.log("Received response:", response);
+            $('.id').val(response.id);
+            var decrypted_firstname = decryptData(response.firstname);
+            var decrypted_lastname = decryptData(response.lastname);
+            $('#edit_firstname').val(decrypted_firstname);
+            $('#edit_lastname').val(decrypted_lastname);
+            $('.fullname').html(decrypted_firstname + ' ' + decrypted_lastname);
+        },
+        error: function (xhr, status, error) {
+            console.log("Error occurred while fetching data:", error);
         }
-      });
-    }
-  </script>
+    });
+}
+
+function decryptData(data) {
+    var key = CryptoJS.enc.Hex.parse('acdb62d64e2029a1873cd28ef52c6bc8c2e1b486400d5c7b40e741f1e28bdf3a');
+    var cipher = "aes-256-cbc";
+    var dataBytes = CryptoJS.enc.Base64.parse(data);
+    var iv = dataBytes.clone().words.slice(0, 4); // Extract IV from the data
+    var encrypted = dataBytes.clone().words.slice(4); // Extract encrypted data
+    var decrypted = CryptoJS.AES.decrypt({ciphertext: CryptoJS.lib.WordArray.create(encrypted)}, key, {iv: CryptoJS.lib.WordArray.create(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
+    return decrypted.toString(CryptoJS.enc.Utf8);
+}
+
+</script>
+
 </body>
 
 </html>

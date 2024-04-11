@@ -28,6 +28,7 @@
       <li class="header">SETTINGS</li>
       <li class=""><a href="ballot.php"><i class="fa fa-file-text"></i> <span>Ballot Position</span></a></li>
       <li class=""><a href="#config" data-toggle="modal"><i class="fa fa-cog"></i> <span>Election Title</span></a></li>
+      <li class=""><a href="#config_election" data-toggle="modal"><i class="fa fa-bullhorn"></i> <span>Start Election</span></a></li>
     </ul>
   </section>
   <!-- /.sidebar -->

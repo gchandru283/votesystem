@@ -1,5 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
+<?php include '../encryption.php'; ?>
 
 <body class="hold-transition skin-blue sidebar-mini">
   <div class="wrapper">
@@ -55,7 +56,7 @@
                     <th>Lastname</th>
                     <th>Photo</th>
                     <th>Mobile No</th>
-                    <th>Voters Key</th>
+                    <th>Voter ID </th>
                     <th>Tools</th>
                   </thead>
                   <tbody>
@@ -63,17 +64,23 @@
                     $sql = "SELECT * FROM voters";
                     $query = $conn->query($sql);
                     while ($row = $query->fetch_assoc()) {
-                      $image = (!empty($row['photo'])) ? '../images/' . $row['photo'] : '../images/profile.jpg';
+
+                      $firstname = decryptData($row['firstname']);
+                      $lastname = decryptData($row['voters_key']);
+                      $mobile = decryptData($row['mobile']);
+                      $voterid = decryptData($row['voterid']);
+
+                      $image = (!empty($row['photo'])) ? '../uploads/' . $row['photo'] : '../images/profile.jpg';
                       echo "
                         <tr>
-                        <td>" . $row['firstname'] . "</td>
-                          <td>" . $row['lastname'] . "</td>
+                        <td>" . $firstname . "</td>
+                          <td>" . $lastname . "</td>
                           <td>
                             <img src='" . $image . "' width='35px' height='35px'>
                             <a href='#edit_photo' data-toggle='modal' class='pull-right photo' data-id='" . $row['id'] . "'><span class='fa fa-edit'></span></a>
                           </td>
-                          <td>" . $row['mobile'] . "</td>
-                          <td>" . $row['voters_key'] . "</td>
+                          <td>" . $mobile . "</td>
+                          <td>" . $voterid . "</td>
                           <td>
                             <button class='btn btn-success btn-sm edit btn-flat' data-id='" . $row['id'] . "'><i class='fa fa-edit'></i> Edit</button>
                             <button class='btn btn-danger btn-sm delete btn-flat' data-id='" . $row['id'] . "'><i class='fa fa-trash'></i> Delete</button>
@@ -95,6 +102,9 @@
     <?php include 'includes/voters_modal.php'; ?>
   </div>
   <?php include 'includes/scripts.php'; ?>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
+
   <script>
     $(function () {
       $(document).on('click', '.edit', function (e) {
@@ -117,7 +127,6 @@
       });
 
     });
-
     function getRow(id) {
       $.ajax({
         type: 'POST',
@@ -126,14 +135,28 @@
         dataType: 'json',
         success: function (response) {
           $('.id').val(response.id);
-          $('#edit_firstname').val(response.firstname);
-          $('#edit_lastname').val(response.lastname);
-          $('#edit_password').val(response.password);
-          $('#edit_mobile').val(response.mobile);
-          $('.fullname').html(response.firstname + ' ' + response.lastname);
+          var decrypted_firstname = decryptData(response.firstname);
+          var decrypted_lastname = decryptData(response.lastname);
+          var decrypted_mobile = decryptData(response.mobile);
+          var decrypted_voterid = decryptData(response.voterid);
+          $('#edit_firstname').val(decrypted_firstname);
+          $('#edit_lastname').val(decrypted_lastname);
+          $('.fullname').html(decrypted_firstname + ' ' + decrypted_lastname);
+          $('#edit_mobile').val(decrypted_mobile);
+          $('#edit_voterid').val(decrypted_voterid);
         }
       });
     }
+
+    function decryptData(data) {
+    var key = CryptoJS.enc.Hex.parse('acdb62d64e2029a1873cd28ef52c6bc8c2e1b486400d5c7b40e741f1e28bdf3a');
+    var cipher = "aes-256-cbc";
+    var dataBytes = CryptoJS.enc.Base64.parse(data);
+    var iv = dataBytes.clone().words.slice(0, 4); // Extract IV from the data
+    var encrypted = dataBytes.clone().words.slice(4); // Extract encrypted data
+    var decrypted = CryptoJS.AES.decrypt({ciphertext: CryptoJS.lib.WordArray.create(encrypted)}, key, {iv: CryptoJS.lib.WordArray.create(iv), mode: CryptoJS.mode.CBC, padding: CryptoJS.pad.Pkcs7});
+    return decrypted.toString(CryptoJS.enc.Utf8);
+}
   </script>
 </body>
 

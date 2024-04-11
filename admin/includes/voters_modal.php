@@ -24,12 +24,27 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="password" class="col-sm-3 control-label">Password</label>
+            <label for="mobile" class="col-sm-3 control-label">Mobile Number</label>
 
             <div class="col-sm-9">
-              <input type="password" class="form-control" id="password" name="password" required>
+              <input type="text" class="form-control" id="mobile" name="mobile" required>
             </div>
           </div>
+          <div class="form-group">
+            <label for="voterid" class="col-sm-3 control-label">Voter Id</label>
+
+            <div class="col-sm-9">
+              <input type="text" class="form-control" id="voterid" name="voterid" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="photo" class="col-sm-3 control-label">Photo</label>
+
+            <div class="col-sm-9">
+              <input type="file" accept="image/*" class="form-control" id="photo" name="photo" required accept="image/*">
+            </div>
+          </div>
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i
@@ -74,13 +89,13 @@
               <input type="text" class="form-control" id="edit_mobile" name="mobile">
             </div>
           </div>
-          <!-- <div class="form-group">
-            <label for="edit_password" class="col-sm-3 control-label">Password</label>
+          <div class="form-group">
+            <label for="edit_voterid" class="col-sm-3 control-label">Voter ID</label>
 
             <div class="col-sm-9">
-              <input type="password" class="form-control" id="edit_password" name="password">
+              <input type="text" class="form-control" id="edit_voterid" name="voterid">
             </div>
-          </div> -->
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i
@@ -136,7 +151,7 @@
             <label for="photo" class="col-sm-3 control-label">Photo</label>
 
             <div class="col-sm-9">
-              <input type="file" id="photo" name="photo" required>
+              <input type="file" id="photo" name="photo" required accept="image/*">
             </div>
           </div>
       </div>
@@ -150,3 +165,15 @@
     </div>
   </div>
 </div>
+
+<script>
+  document.getElementById('edit_voterid').addEventListener('input', function(event) {
+            var inputText = event.target.value;
+            event.target.value = inputText.toUpperCase();
+        });
+  document.getElementById('voterid').addEventListener('input', function(event) {
+      var inputText = event.target.value;
+      event.target.value = inputText.toUpperCase();
+  });
+
+  </script>

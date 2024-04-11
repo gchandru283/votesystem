@@ -1,4 +1,4 @@
-<!-- Config -->
+<!-- Config Name-->
 <div class="modal fade" id="config">
     <div class="modal-dialog">
         <div class="modal-content">
@@ -26,6 +26,32 @@
             <div class="modal-footer">
               <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
               <button type="submit" class="btn btn-success btn-flat" name="save"><i class="fa fa-save"></i> Save</button>
+              </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Config Election Start-->
+<div class="modal fade" id="config_election">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span></button>
+              <h4 class="modal-title"><b>Starting Election..</b></h4>
+            </div>
+            <div class="modal-body">
+              <div class="text-center">
+                <form class="form-horizontal" method="POST" action="config_election.php">
+                  <div class="form-group">
+                    <h2 class="bold">Send Credentials to Voters ?</h2>
+                  </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
+              <button type="submit" class="btn btn-primary btn-flat" name="send"><i class="fa fa-paper-plane"></i>&nbsp; Send</button>
               </form>
             </div>
         </div>

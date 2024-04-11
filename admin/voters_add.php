@@ -6,7 +6,7 @@
 		$lastname = $_POST['lastname'];
 		$password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 		
-		//generate voters id
+		//generate voters key
 		$set = '123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 		$voter = substr(str_shuffle($set), 0, 15);
 

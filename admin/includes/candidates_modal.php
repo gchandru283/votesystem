@@ -243,6 +243,16 @@
     </div>
 </div>
 
+<script>
+  document.getElementById('edit_voterid').addEventListener('input', function(event) {
+            var inputText = event.target.value;
+            event.target.value = inputText.toUpperCase();
+        });
+  document.getElementById('voterid').addEventListener('input', function(event) {
+      var inputText = event.target.value;
+      event.target.value = inputText.toUpperCase();
+  });
 
+  </script>
 
      

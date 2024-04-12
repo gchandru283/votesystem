@@ -51,24 +51,24 @@
             <div class="box-body">
               <table id="example1" class="table table-bordered">
                 <thead>
-                  <th class="hidden"></th>
-                  <th>Position</th>
-                  <th>Candidate</th>
-                  <th>Voter</th>
+                  <th><center>Position (Encrypted)</center></th>
+                  <th><center>Candidate (Encrypted)</center></th>
+                  <th><center>Voter (Encrypted)</center></th>
                 </thead>
                 <tbody>
                   <?php
                     $sql = "SELECT *, candidates.firstname AS canfirst, candidates.lastname AS canlast, voters.firstname AS votfirst, voters.lastname AS votlast FROM votes LEFT JOIN positions ON positions.id=votes.position_id LEFT JOIN candidates ON candidates.id=votes.candidate_id LEFT JOIN voters ON voters.id=votes.voters_id ORDER BY positions.priority ASC";
                     $query = $conn->query($sql);
+                    $rowNumber = 1;
                     while($row = $query->fetch_assoc()){
                       echo "
                         <tr>
-                          <td class='hidden'></td>
                           <td>".$row['description']."</td>
                           <td>".$row['canfirst'].' '.$row['canlast']."</td>
                           <td>".$row['votfirst'].' '.$row['votlast']."</td>
                         </tr>
                       ";
+                      $rowNumber++;
                     }
                   ?>
                 </tbody>

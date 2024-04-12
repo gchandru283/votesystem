@@ -1,5 +1,6 @@
-<?php include 'includes/session.php'; ?>
-<?php include 'includes/header.php'; ?>
+<?php   include 'includes/session.php'; 
+		include 'includes/header.php';
+		include './encryption.php'; ?>
 
 <body class="hold-transition skin-blue layout-top-nav">
 	<div class="wrapper">
@@ -80,10 +81,17 @@
 									$sql = "SELECT * FROM positions ORDER BY priority ASC";
 									$query = $conn->query($sql);
 									while ($row = $query->fetch_assoc()) {
-										$sql = "SELECT * FROM candidates WHERE position_id='" . $row['id'] . "'";
+										$max_vote = decryptData($row['max_vote']);
+										$description = decryptData($row['description']);
+										$sql = "SELECT * FROM candidates";
 										$cquery = $conn->query($sql);
 										while ($crow = $cquery->fetch_assoc()) {
-											$slug = slugify($row['description']);
+											$c_position_id = decryptData($crow['position_id']);
+											if($c_position_id == $row['id']){
+											$c_firstname = decryptData($crow['firstname']);
+											$c_lastname = decryptData($crow['lastname']);
+											$c_platform = decryptData($crow['platform']);
+											$slug = slugify(decryptData($row['description']));
 											$checked = '';
 											if (isset ($_SESSION['post'][$slug])) {
 												$value = $_SESSION['post'][$slug];
@@ -100,28 +108,29 @@
 													}
 												}
 											}
-											$input = ($row['max_vote'] > 1) ? '<input type="checkbox" class="flat-red ' . $slug . '" name="' . $slug . "[]" . '" value="' . $crow['id'] . '" ' . $checked . '>' : '<input type="radio" class="flat-red ' . $slug . '" name="' . slugify($row['description']) . '" value="' . $crow['id'] . '" ' . $checked . '>';
+
+											$input = ($max_vote > 1) ? '<input type="checkbox" class="flat-red ' . $slug . '" name="' . $slug . "[]" . '" value="' . $crow['id'] . '" ' . $checked . '>' : '<input type="radio" class="flat-red ' . $slug . '" name="' . slugify($description) . '" value="' . $crow['id'] . '" ' . $checked . '>';
 											$image = (!empty ($crow['photo'])) ? 'images/' . $crow['photo'] : 'images/profile.jpg';
 											$candidate .= '
 												<li>
-													' . $input . '<button type="button" class="btn btn-primary btn-sm btn-flat clist platform" data-platform="' . $crow['platform'] . '" data-fullname="' . $crow['firstname'] . ' ' . $crow['lastname'] . '"><i class="fa fa-search"></i> Platform</button><img src="' . $image . '" height="100px" width="100px" class="clist"><span class="cname clist">' . $crow['firstname'] . ' ' . $crow['lastname'] . '</span>
+													' . $input . '<button type="button" class="btn btn-primary btn-sm btn-flat clist platform" data-platform="' . $c_platform . '" data-fullname="' . $c_firstname . ' ' . $c_lastname . '"><i class="fa fa-search"></i> Platform</button><img src="' . $image . '" height="100px" width="100px" class="clist"><span class="cname clist">' . $c_firstname . ' ' . $c_lastname . '</span>
 												</li>
 											';
 										}
-
-										$instruct = ($row['max_vote'] > 1) ? 'You may select up to ' . $row['max_vote'] . ' candidates' : 'Select only one candidate';
+									}
+										$instruct = ($max_vote > 1) ? 'You may select up to ' . $max_vote . ' candidates' : 'Select only one candidate';
 
 										echo '
 											<div class="row">
 												<div class="col-xs-12">
 													<div class="box box-solid" id="' . $row['id'] . '">
 														<div class="box-header with-border">
-															<h3 class="box-title"><b>' . $row['description'] . '</b></h3>
+															<h3 class="box-title"><b>' . $description . '</b></h3>
 														</div>
 														<div class="box-body">
 															<p>' . $instruct . '
 																<span class="pull-right">
-																	<button type="button" class="btn btn-success btn-sm btn-flat reset" data-desc="' . slugify($row['description']) . '"><i class="fa fa-refresh"></i> Reset</button>
+																	<button type="button" class="btn btn-success btn-sm btn-flat reset" data-desc="' . slugify($description) . '"><i class="fa fa-refresh"></i> Reset</button>
 																</span>
 															</p>
 															<div id="candidate_list">

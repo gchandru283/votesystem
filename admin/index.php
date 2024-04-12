@@ -76,12 +76,13 @@ if (isset ($_SESSION['admin'])) {
             
             <!-- OTP validation result will be shown here -->
             <div id="otpValidationResult"></div>
-
+<br>
             <div class="row">
                 <div class="col-xs-4 col-xs-offset-4">
                     <button type="submit" class="btn btn-rounded btn-primary btn-block" name="login" id="loginBtn" disabled><i class="fa fa-sign-in"></i> Sign In</button>
                 </div>
             </div>
+            <br><br>
         </form>
 
         <?php
@@ -94,11 +95,11 @@ if (isset ($_SESSION['admin'])) {
             unset($_SESSION['error']);
         }
         ?>
-        <div style="font-size: 16px; padding-top:40px">
-            <p>
-                <center><b>NOTE:</b> This is for Admin. For Citizen login, <a href="../index.php">Click here</a>.</center>
-            </p>
-        </div>
+    </div>
+    <div style="font-size: 16px; padding-top:40px">
+        <p>
+            <center><b>NOTE:</b> This is for Admin. For Citizen login, <a href="../index.php">Click here</a>.</center>
+        </p>
     </div>
 </div>
 
@@ -108,7 +109,7 @@ if (isset ($_SESSION['admin'])) {
 	<!-- JavaScript to handle OTP validation and enabling submit button -->
 	<script>
 		    // Function to send OTP
-			var set = '1234567890abcdeVWXYZ';
+			var set = '1234567890abcdefghTUVWXYZ';
 
 			// Generate a 6-character OTP
 			var otpGenerated = '';
@@ -154,7 +155,7 @@ if (isset ($_SESSION['admin'])) {
     // Function to validate OTP
     function validateOTP(otp) {
         // Assuming OTP is hardcoded for demonstration, replace it with your actual validation logic
-        // console.log(otpGenerated);
+        console.log(otpGenerated);
 		console.log("Otp :"+ otp);
 		return otp === otpGenerated ;
 		

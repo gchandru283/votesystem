@@ -1,7 +1,7 @@
 <?php include 'includes/session.php'; 
       include 'includes/slugify.php'; 
       include 'includes/header.php';
-      include_once '../encryption.php'; ?>
+      include '../encryption.php'; ?>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -183,7 +183,7 @@
     $carray = array();
     $varray = array();
     while($crow = $cquery->fetch_assoc()){
-      array_push($carray, $crow['lastname']);
+      array_push($carray, decryptData($crow['lastname']));
       $sql = "SELECT * FROM votes WHERE candidate_id = '".$crow['id']."'";
       $vquery = $conn->query($sql);
       array_push($varray, $vquery->num_rows);
@@ -194,7 +194,7 @@
     <script>
     $(function(){
       var rowid = '<?php echo $row['id']; ?>';
-      var description = '<?php echo slugify($row['description']); ?>';
+      var description = '<?php echo slugify(decryptData($row['description'])); ?>';
       var barChartCanvas = $('#'+description).get(0).getContext('2d')
       var barChart = new Chart(barChartCanvas)
       var barChartData = {

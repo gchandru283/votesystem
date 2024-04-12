@@ -31,9 +31,8 @@ function sendMessages(){
             $to = "+91" . $mobile; 
             $body = "Dear User, this message is for e-Voting , Find your voter credentials below! \n\n 𝗩𝗼𝘁𝗲𝗿 𝗞𝗲𝘆 : " . $voters_key . "\n 𝗣𝗮𝘀𝘀𝘄𝗼𝗿𝗱 : " .  $hidden_voterid . "\n\nUse the following link to cast your vote Online. \nwww.google.com \n\nThank you!"; 
             $api = sendMessage($client, $to, $body);
-
-            return "Messages sent successfully!";
         }
+        return "Messages sent successfully!";
     } else {
         return "Failed to fetch records from the database\n";
     }

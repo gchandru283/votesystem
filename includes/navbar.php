@@ -24,10 +24,10 @@
         <ul class="nav navbar-nav">
           <li class="user user-menu">
             <a href="">
-              <img src="<?php echo (!empty ($voter['photo'])) ? 'images/' . $voter['photo'] : 'images/profile.jpg' ?>"
+              <img src="<?php echo (!empty ($voter['photo'])) ? 'uploads/' . $voter['photo'] : 'images/profile.jpg' ?>"
                 class="user-image" alt="User Image">
               <span class="hidden-xs">
-                <?php echo $voter['firstname'] . ' ' . $voter['lastname']; ?>
+                <?php echo decryptData($voter['firstname']) . ' ' . decryptData($voter['lastname']); ?>
               </span>
             </a>
           </li>

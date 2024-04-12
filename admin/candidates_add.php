@@ -15,7 +15,7 @@ if (isset($_POST['add'])) {
 		$check = getimagesize($_FILES["photo"]["tmp_name"]);
 		if ($check === false) {
 			$_SESSION['error'] = 'File is not an image.';
-			header('location: voters.php');
+			header('location: candidates.php');
 			exit();
 		}
 	}
@@ -25,7 +25,7 @@ if (isset($_POST['add'])) {
 		$check = getimagesize($_FILES["photo"]["tmp_name"]);
 		if ($check === false) {
 			$_SESSION['error'] = 'File is not an image.';
-			header('location: voters.php');
+			header('location: candidates.php');
 			exit();
 		}
 	}
@@ -33,7 +33,7 @@ if (isset($_POST['add'])) {
 	// Check file size (limit set to 1MB)
 	if ($_FILES["photo"]["size"] > 1000000) {
 		$_SESSION['error'] = "Sorry, your file is too large. Try uploading less than 1 MB";
-		header('location: voters.php');
+		header('location: candidates.php');
 		exit();
 	}
 

@@ -163,7 +163,7 @@
           var decrypted_position_id = decryptData(response.position_id);
           var decrypted_description = decryptData(response.description);
           $('#posselect').val(decrypted_position_id).html(decrypted_description);
-          $('#edit_firstname').val(decrypted_platform);
+          $('#edit_firstname').val(decrypted_firstname);
           $('#edit_lastname').val(decrypted_lastname);
           $('#edit_mobile').val(decrypted_mobile);
           $('#edit_voterid').val(decrypted_voterid);

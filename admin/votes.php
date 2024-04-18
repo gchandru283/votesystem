@@ -1,5 +1,6 @@
-<?php include 'includes/session.php'; ?>
-<?php include 'includes/header.php'; ?>
+<?php include 'includes/session.php'; 
+      include 'includes/header.php';
+      include '../encryption.php';    ?>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -51,7 +52,7 @@
             <div class="box-body">
               <table id="example1" class="table table-bordered">
                 <thead>
-                  <th><center>Position (Encrypted)</center></th>
+                  <th><center>Position</center></th>
                   <th><center>Candidate (Encrypted)</center></th>
                   <th><center>Voter (Encrypted)</center></th>
                 </thead>
@@ -61,11 +62,12 @@
                     $query = $conn->query($sql);
                     $rowNumber = 1;
                     while($row = $query->fetch_assoc()){
+                      $description = decryptData($row['description']);
                       echo "
                         <tr>
-                          <td>".$row['description']."</td>
-                          <td>".$row['canfirst'].' '.$row['canlast']."</td>
-                          <td>".$row['votfirst'].' '.$row['votlast']."</td>
+                          <td><center>". $description ."</td>
+                          <td><center>".$row['canfirst'].' '.$row['canlast']."</td>
+                          <td><center>".$row['votfirst'].' '.$row['votlast']."</td>
                         </tr>
                       ";
                       $rowNumber++;

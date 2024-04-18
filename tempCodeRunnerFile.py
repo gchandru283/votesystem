@@ -1,0 +1,1 @@
+verification_image_path = sys.argv[1]

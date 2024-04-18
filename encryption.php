@@ -20,24 +20,3 @@ function decryptData($data) {
 }
 ?>
 
-
- <?php
-// function encryptData($data, $key)
-// {
-//     $cipher = "aes-256-cbc";
-//     $iv = openssl_random_pseudo_bytes(25); // Generate IV with length 25 bytes
-//     $encrypted = openssl_encrypt($data, $cipher, $key, OPENSSL_RAW_DATA, $iv);
-//     return base64_encode($iv . $encrypted); // Concatenate IV with encrypted data
-// }
-
-// function decryptData($data, $key)
-// {
-//     $cipher = "aes-256-cbc";
-//     $data = base64_decode($data);
-//     $iv_length = 25; // IV length is 25 bytes
-//     $iv = substr($data, 0, $iv_length); // Extract IV from the data
-//     $encrypted = substr($data, $iv_length); // Extract encrypted data
-//     return openssl_decrypt($encrypted, $cipher, $key, OPENSSL_RAW_DATA, $iv);
-// }
-
-?> 

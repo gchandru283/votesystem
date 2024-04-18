@@ -38,7 +38,7 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="photo" class="col-sm-3 control-label">Photo</label>
+            <label for="photo" class="col-sm-3 control-label">Photo (size < 3 MB)</label>
 
             <div class="col-sm-9">
               <input type="file" accept="image/*" class="form-control" id="photo" name="photo" required accept="image/*">
@@ -148,7 +148,7 @@
         <form class="form-horizontal" method="POST" action="voters_photo.php" enctype="multipart/form-data">
           <input type="hidden" class="id" name="id">
           <div class="form-group">
-            <label for="photo" class="col-sm-3 control-label">Photo</label>
+            <label for="photo" class="col-sm-3 control-label">Photo (size between 1 and 2 MB)</label>
 
             <div class="col-sm-9">
               <input type="file" id="photo" name="photo" required accept="image/*">

@@ -1,6 +1,6 @@
-<?php   include 'includes/session.php'; 
-		include 'includes/header.php';
-		include './encryption.php'; ?>
+<?php include 'includes/session.php';
+include 'includes/header.php';
+include './encryption.php'; ?>
 
 <body class="hold-transition skin-blue layout-top-nav">
 	<div class="wrapper">
@@ -19,7 +19,7 @@
 					<div class="row">
 						<div class="col-sm-10 col-sm-offset-1">
 							<?php
-							if (isset ($_SESSION['error'])) {
+							if (isset($_SESSION['error'])) {
 								?>
 								<div class="alert alert-danger alert-dismissible">
 									<button type="button" class="close" data-dismiss="alert"
@@ -38,7 +38,7 @@
 								unset($_SESSION['error']);
 
 							}
-							if (isset ($_SESSION['success'])) {
+							if (isset($_SESSION['success'])) {
 								echo "
 				            	<div class='alert alert-success alert-dismissible'>
 				              		<button type='button' class='close' data-dismiss='alert' aria-hidden='true'>&times;</button>
@@ -69,8 +69,7 @@
 										Ballot</a>
 								</div>
 								<?php
-							} else 
-							{
+							} else {
 								?>
 								<!-- Voting Ballot -->
 								<form method="POST" id="ballotForm" action="submit_ballot.php">
@@ -86,38 +85,38 @@
 										$sql = "SELECT * FROM candidates";
 										$cquery = $conn->query($sql);
 										while ($crow = $cquery->fetch_assoc()) {
-											$c_position_id = decryptData($crow['position_id']);
-											if($c_position_id == $row['id']){
-											$c_firstname = decryptData($crow['firstname']);
-											$c_lastname = decryptData($crow['lastname']);
-											$c_platform = decryptData($crow['platform']);
-											$slug = slugify(decryptData($row['description']));
-											$checked = '';
-											if (isset ($_SESSION['post'][$slug])) {
-												$value = $_SESSION['post'][$slug];
+											// $c_position_id = decryptData($crow['position_id']);
+											if ($crow['position_id'] == $row['id']) {
+												$c_firstname = decryptData($crow['firstname']);
+												$c_lastname = decryptData($crow['lastname']);
+												$c_platform = decryptData($crow['platform']);
+												$slug = slugify(decryptData($row['description']));
+												$checked = '';
+												if (isset($_SESSION['post'][$slug])) {
+													$value = $_SESSION['post'][$slug];
 
-												if (is_array($value)) {
-													foreach ($value as $val) {
-														if ($val == $crow['id']) {
+													if (is_array($value)) {
+														foreach ($value as $val) {
+															if ($val == $crow['id']) {
+																$checked = 'checked';
+															}
+														}
+													} else {
+														if ($value == $crow['id']) {
 															$checked = 'checked';
 														}
 													}
-												} else {
-													if ($value == $crow['id']) {
-														$checked = 'checked';
-													}
 												}
-											}
 
-											$input = ($max_vote > 1) ? '<input type="checkbox" class="flat-red ' . $slug . '" name="' . $slug . "[]" . '" value="' . $crow['id'] . '" ' . $checked . '>' : '<input type="radio" class="flat-red ' . $slug . '" name="' . slugify($description) . '" value="' . $crow['id'] . '" ' . $checked . '>';
-											$image = (!empty ($crow['photo'])) ? 'images/' . $crow['photo'] : 'images/profile.jpg';
-											$candidate .= '
+												$input = ($max_vote > 1) ? '<input type="checkbox" class="flat-red ' . $slug . '" name="' . $slug . "[]" . '" value="' . $crow['id'] . '" ' . $checked . '>' : '<input type="radio" class="flat-red ' . $slug . '" name="' . slugify($description) . '" value="' . $crow['id'] . '" ' . $checked . '>';
+												$image = (!empty($crow['photo'])) ? 'images/' . $crow['photo'] : 'images/profile.jpg';
+												$candidate .= '
 												<li>
 													' . $input . '<button type="button" class="btn btn-primary btn-sm btn-flat clist platform" data-platform="' . $c_platform . '" data-fullname="' . $c_firstname . ' ' . $c_lastname . '"><i class="fa fa-search"></i> Platform</button><img src="' . $image . '" height="100px" width="100px" class="clist"><span class="cname clist">' . $c_firstname . ' ' . $c_lastname . '</span>
 												</li>
 											';
+											}
 										}
-									}
 										$instruct = ($max_vote > 1) ? 'You may select up to ' . $max_vote . ' candidates' : 'Select only one candidate';
 
 										echo '

@@ -66,7 +66,7 @@
                     while ($row = $query->fetch_assoc()) {
 
                       $firstname = decryptData($row['firstname']);
-                      $lastname = decryptData($row['voters_key']);
+                      $lastname = decryptData($row['lastname']);
                       $mobile = decryptData($row['mobile']);
                       $voterid = decryptData($row['voterid']);
 

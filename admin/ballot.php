@@ -1,5 +1,6 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php'; ?>
+<?php include 'includes/ballot_modal.php'; ?>
 <body class="hold-transition skin-blue sidebar-mini">
 <div class="wrapper">
 
@@ -57,8 +58,6 @@
 </div>
 <?php include 'includes/scripts.php'; ?>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js"></script>
-
 <script>
 
 $(function(){
@@ -110,65 +109,17 @@ $(function(){
 
 });
 
-function fetch() {
-    $.ajax({
-        type: 'POST',
-        url: 'ballot_fetch.php',
-        dataType: 'json',
-        success: function(response) {
-            var $response = $(response); // Convert response HTML string to jQuery object
-            
-            // Decrypt and format data inside '.box-title b' elements
-            var encryptedTitles = $response.find('.box-title b');
-            encryptedTitles.each(function(index, element) {
-                var encryptedData = $(element).text().trim(); // Extract encrypted data from the element
-                var decryptedData = decryptData(encryptedData); // Decrypt the encrypted data
-                $(element).text(decryptedData); // Replace the encrypted data with the decrypted data
-            });
-            // Decrypt and format data inside '.box-body p' elements
-            // var boxBodies = $response.find('.box-body p');
-            // boxBodies.each(function(index, element) {
-            //     var encryptedData1 = $(element).text().trim(); // Extract encrypted data from the element
-            //     encryptedData1 = encryptedData1.replace('You may select up to', '').replace(' candidates', '');var decryptedData1 = decryptData(encryptedData1); // Decrypt the encrypted data
-            //     $(element).text(decryptedData1); // Append the decrypted data as text node
-            // });
-
-            // Log the response and update the content
-            console.log(response);
-            $('#content').html($response).iCheck({checkboxClass: 'icheckbox_flat-green', radioClass: 'iradio_flat-green'});
-        }
-    });
-}
-
-function decryptData(data) {
-    console.log("Decrypting data:", data);
-    
-    // Check if input data is null or undefined
-    if (data === null || data === undefined) {
-        console.error("Input data is null or undefined");
-        return ""; // Or handle the error appropriately
+function fetch(){
+  $.ajax({
+    type: 'POST',
+    url: 'ballot_fetch.php',
+    dataType: 'json',
+    success: function(response){
+      $('#content').html(response).iCheck({checkboxClass: 'icheckbox_flat-green',radioClass: 'iradio_flat-green'});
     }
-    
-    // Proceed with decryption logic
-    var key = CryptoJS.enc.Hex.parse('acdb62d64e2029a1873cd28ef52c6bc8c2e1b486400d5c7b40e741f1e28bdf3a');
-    var dataBytes = CryptoJS.enc.Base64.parse(data);
-    var iv = dataBytes.clone().words.slice(0, 4); // Extract IV from the data
-    var encrypted = dataBytes.clone().words.slice(4); // Extract encrypted data
-    var decrypted;
-    
-    try {
-        decrypted = CryptoJS.AES.decrypt({ciphertext: CryptoJS.lib.WordArray.create(encrypted)}, key, {iv: CryptoJS.lib.WordArray.create(iv), padding: CryptoJS.pad.Pkcs7}).toString(CryptoJS.enc.Utf8);
-        console.log("Decrypted result:", decrypted);
-    } catch (error) {
-        console.error("Error decoding decrypted data:", error);
-        decrypted = data; // Return the original encrypted data on decryption failure
-    }
-    
-    return decrypted;
+  });
+
 }
-
-
-
 </script>
 </body>
 </html>

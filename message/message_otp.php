@@ -6,8 +6,8 @@ function sendMessages($number,$otp){
     include '../encryption.php';
     include '../includes/conn.php';
     
-    $ultramsg_token = "o6y3u5q52usfjgwt"; // Your Ultramsg.com token
-    $instance_id = "instance83316"; // Your Ultramsg.com instance id
+    $ultramsg_token = "5pjmvcqb8yo8nmt1"; // Your Ultramsg.com token
+    $instance_id = "instance83603"; // Your Ultramsg.com instance id
 
     // Create a new UltraMsg\WhatsAppApi instance
     $client = new WhatsAppApi($ultramsg_token, $instance_id);

@@ -156,7 +156,6 @@ if (isset ($_SESSION['admin'])) {
     function validateOTP(otp) {
         // Assuming OTP is hardcoded for demonstration, replace it with your actual validation logic
         console.log(otpGenerated);
-		console.log("Otp :"+ otp);
 		return otp === otpGenerated ;
 		
     }

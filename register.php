@@ -67,7 +67,7 @@
 					<span class="fa fa-id-card-o form-control-feedback" style="transform: scale(1.3);"></span>
 				</div>
 				<div class="form-group has-feedback">
-					<label for="photo">Select your Image (< 1 MB) :</label><br />
+					<label for="photo">Select your Image (size between 500KB and 3 MB) :</label><br />
 							<input type="file" class="form-control" id="photo" name="photo" required accept="image/*"
 								style="outline: none;cursor:pointer">
 							<span class="glyphicon glyphicon-user form-control-feedback"
@@ -132,10 +132,17 @@
 		$voterid = $_POST['voterid'];
 
 		// Calculate age from date of birth
-		$today = new DateTime(date('Y-m-d'));
-		$dob_date = new DateTime($dob);
-		$interval = $today->diff($dob_date);
-		$age = $interval->y;
+		$dob_date = DateTime::createFromFormat('Y-m-d', $dob);
+		if ($dob_date === false) {
+			// Handle invalid date format
+			echo "Invalid date format";
+		} else {
+			// Calculate age from date of birth
+			$today = new DateTime();
+			$interval = $today->diff($dob_date);
+			$age = $interval->y;
+}
+
 
 		if (isset($_FILES["photo"]["tmp_name"])) {
             $check = getimagesize($_FILES["photo"]["tmp_name"]);
@@ -157,10 +164,13 @@
     }
 
         // Check file size (limit set to 1MB)
-        if ($_FILES["photo"]["size"] > 1000000) { 
-            $_SESSION['error'] = "Sorry, your file is too large. Try uploading less than 1 MB";
-           
-        }
+    if ($_FILES["photo"]["size"] < 500000) { 
+        $_SESSION['error'] = "Sorry, your file is too small. Try uploading greater than 500 KB";
+    }
+    // Check file size (limit set to 1MB)
+    if ($_FILES["photo"]["size"] > 2000000) { 
+        $_SESSION['error'] = "Sorry, your file is too large. Try uploading less than 3 MB";
+    }
     
         $filename = $_FILES['photo']['name'];
         $file_tmp = $_FILES['photo']['tmp_name'];
@@ -220,13 +230,11 @@
             event.preventDefault();
             return;
         }
-
         if (!voterid.match(/^[a-zA-Z]{3}\d{7}$/)) {
             alert('Voter ID should be 3 characters followed by 7 numbers.');
             event.preventDefault();
             return;
         }
-
         if (!dob.match(/^\d{4}-\d{2}-\d{2}$/)) {
             alert('Date of Birth should be in YYYY-MM-DD format.');
             event.preventDefault();
@@ -245,5 +253,4 @@
 </script>
 
 </body>
-
 </html>

@@ -31,11 +31,17 @@ if (isset($_POST['add'])) {
 	}
 
 	// Check file size (limit set to 1MB)
-	if ($_FILES["photo"]["size"] > 1000000) {
-		$_SESSION['error'] = "Sorry, your file is too large. Try uploading less than 1 MB";
-		header('location: candidates.php');
-		exit();
-	}
+    if ($_FILES["photo"]["size"] < 500000) { 
+        $_SESSION['error'] = "Sorry, your file is too small. Try uploading greater than 500 KB";
+        header('location: candidates.php');
+        exit();
+    }
+    // Check file size (limit set to 1MB)
+    if ($_FILES["photo"]["size"] > 3000000) { 
+        $_SESSION['error'] = "Sorry, your file is too large. Try uploading less than 3 MB";
+        header('location: candidates.php');
+        exit();
+    }
 
 	$filename = $_FILES['photo']['name'];
 	$file_tmp = $_FILES['photo']['tmp_name'];
@@ -43,13 +49,12 @@ if (isset($_POST['add'])) {
 	if (move_uploaded_file($file_tmp, '../images/' . $new_filename)) {
 		$encrypted_firstname = encryptData($firstname);
 		$encrypted_lastname = encryptData($lastname);
-		$encrypted_position = encryptData($position);
 		$encrypted_platform = encryptData($platform);
 		$encrypted_voterid = encryptData($voterid);
 		$encrypted_aadhar = encryptData($aadhar);
 		$encrypted_mobile = encryptData($mobile);
 
-		$sql = "INSERT INTO candidates (position_id, firstname, lastname, photo, platform, voterid,aadhar,mobile) VALUES ('$encrypted_position', '$encrypted_firstname', '$encrypted_lastname', '$new_filename', '$encrypted_platform','$encrypted_voterid', '$encrypted_aadhar','$encrypted_mobile')";
+		$sql = "INSERT INTO candidates (position_id, firstname, lastname, photo, platform, voterid,aadhar,mobile) VALUES ('$position', '$encrypted_firstname', '$encrypted_lastname', '$new_filename', '$encrypted_platform','$encrypted_voterid', '$encrypted_aadhar','$encrypted_mobile')";
 		// $sql = "INSERT INTO candidates (position_id, firstname, lastname, photo, platform, voterid) VALUES ('$position', '$firstname', '$lastname', '$new_filename', '$platform','$voterid')";
 		if ($conn->query($sql)) {
 			$_SESSION['success'] = 'Candidate added successfully';

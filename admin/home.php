@@ -132,9 +132,6 @@
       <div class="row">
         <div class="col-xs-12">
           <h3>Votes Tally
-            <span class="pull-right">
-              <a href="print.php" class="btn btn-success btn-sm btn-flat"><span class="glyphicon glyphicon-print"></span> Print</a>
-            </span>
           </h3>
         </div>
       </div>
@@ -183,7 +180,8 @@
     $carray = array();
     $varray = array();
     while($crow = $cquery->fetch_assoc()){
-      array_push($carray, decryptData($crow['lastname']));
+      $fullname =  decryptData($crow['firstname']). " " .decryptData($crow['lastname']);
+      array_push($carray, $fullname);
       $sql = "SELECT * FROM votes WHERE candidate_id = '".$crow['id']."'";
       $vquery = $conn->query($sql);
       array_push($varray, $vquery->num_rows);

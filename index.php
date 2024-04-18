@@ -60,7 +60,7 @@ if (isset ($_SESSION['voter'])) {
 					<span class="glyphicon glyphicon-user form-control-feedback" style="transform: scale(1.2);"></span>
 				</div>
 				<div class="form-group has-feedback">
-					<input type="text" class="form-control" name="password" placeholder="Password" required>
+					<input type="password" class="form-control" name="password" placeholder="Password" required>
 					<span class="glyphicon glyphicon-lock form-control-feedback" style="transform: scale(1.2);"></span>
 				</div>
 				<div class="form-group has-feedback text-center">

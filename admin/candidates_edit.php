@@ -14,13 +14,12 @@
 
 		$encrypted_firstname = encryptData($firstname);
 		$encrypted_lastname = encryptData($lastname);
-		$encrypted_position = encryptData($position);
 		$encrypted_platform = encryptData($platform);
 		$encrypted_voterid = encryptData($voterid);
 		$encrypted_aadhar = encryptData($aadhar);
 		$encrypted_mobile = encryptData($mobile);
 
-		$sql = "UPDATE candidates SET firstname = '$encrypted_firstname', lastname = '$encrypted_lastname', position_id = '$encrypted_position', platform = '$encrypted_platform', voterid = '$encrypted_voterid', mobile = '$encrypted_mobile', aadhar = '$encrypted_aadhar' WHERE id = '$id'";
+		$sql = "UPDATE candidates SET firstname = '$encrypted_firstname', lastname = '$encrypted_lastname', position_id = '$position', platform = '$encrypted_platform', voterid = '$encrypted_voterid', mobile = '$encrypted_mobile', aadhar = '$encrypted_aadhar' WHERE id = '$id'";
 		if($conn->query($sql)){
 			$_SESSION['success'] = 'Candidate updated successfully';
 		}

@@ -15,7 +15,7 @@ if (isset($_POST['login'])) {
     // Fetch all records from the database
     $sql = "SELECT * FROM voters";
     $result = $conn->query($sql);
-    
+
     if ($result === false) {
         // Debugging: Check for SQL errors
         echo "SQL Error: " . $conn->error;
@@ -29,16 +29,18 @@ if (isset($_POST['login'])) {
         $decrypted_password = decryptData($row['voterid']);
 
         // Compare decrypted data with user input
-        if ($voters_key == $decrypted_voters_key && $password == $decrypted_password && $captchaName == $captcha . '.jpeg') {
+        if (
+            $voters_key == $decrypted_voters_key && $password == $decrypted_password
+            && $captchaName == $captcha . '.jpeg'
+        ) {
             // If match found, set session and redirect
-             $_SESSION['voter'] = $row['id'];
+            $_SESSION['voter'] = $row['id'];
         }
     }
     // If loop completes without successful login, redirect back with error
     $_SESSION['error'] = 'Invalid credentials';
-    
+
 } else {
-    // Debugging: Check if the login form is being submitted
     echo "Login form not submitted";
 }
 

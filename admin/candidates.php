@@ -72,16 +72,19 @@
                     while ($row = $query->fetch_assoc()) {
                       $firstname = decryptData($row['firstname']);
                       $lastname = decryptData($row['lastname']);
-                      $position = decryptData($row['position_id']);
                       $platform = decryptData($row['platform']);
                       $mobile = decryptData($row['mobile']);
                       $aadhar = decryptData($row['aadhar']);
                       $voterid = decryptData($row['voterid']);
                       $image = (!empty($row['photo'])) ? '../images/' . $row['photo'] : '../images/profile.jpg';
+                      $sql1 = "SELECT * FROM positions WHERE id = {$row['position_id']}";
+                      $query1 = $conn->query($sql1);
+                      $row1 = $query1->fetch_assoc();
+                      $desc = decryptData($row1['description']);
                       echo "
                         <tr>
                           <td class='hidden'></td>
-                          <td>" . $position . "</td>
+                          <td>" . $desc . "</td>
                           <td>
                             <img src='" . $image . "' width='30px' height='30px'>
                             <a href='#edit_photo' data-toggle='modal' class='pull-right photo' data-id='" . $row['canid'] . "'><span class='fa fa-edit'></span></a>

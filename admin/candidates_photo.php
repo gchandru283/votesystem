@@ -1,6 +1,8 @@
 <?php
 include 'includes/session.php';
-include '../encryption.php';
+include '../encryption.php'; ?>
+
+<?php
 
 if (isset($_POST['upload'])) {
     $id = $_POST['id'];
@@ -19,13 +21,18 @@ if (isset($_POST['upload'])) {
         exit(); 
     }
 
-    // Check file size (limit set to 1MB)
-    if ($_FILES["photo"]["size"] > 1000000) { 
-        $_SESSION['error'] = "Sorry, your file is too large. Try uploading less than 1 MB";
-        header('location: candidates.php');
-        exit();
-    }
-
+    	// Check file size (limit set to 1MB)
+        if ($_FILES["photo"]["size"] < 500000) { 
+            $_SESSION['error'] = "Sorry, your file is too small. Try uploading greater than 500 KB";
+            header('location: candidates.php');
+            exit();
+        }
+        // Check file size (limit set to 1MB)
+        if ($_FILES["photo"]["size"] > 3000000) { 
+            $_SESSION['error'] = "Sorry, your file is too large. Try uploading less than 3 MB";
+            header('location: candidates.php');
+            exit();
+        }
     // Check if image file is a valid image
     if (isset($_FILES["photo"]["tmp_name"])) {
         $check = getimagesize($_FILES["photo"]["tmp_name"]);
@@ -54,4 +61,6 @@ if (isset($_POST['upload'])) {
 }
 
 header('location: candidates.php');
+
+
 ?>

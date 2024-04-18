@@ -83,7 +83,7 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label for="photo" class="col-sm-3 control-label">Photo</label>
+                    <label for="photo" class="col-sm-3 control-label">Photo (size < 3 MB)</label>
 
                     <div class="col-sm-9">
                       <input type="file" id="photo" name="photo" accept="image/*">
@@ -157,8 +157,8 @@
                     <label for="edit_position" class="col-sm-3 control-label">Position</label>
 
                     <div class="col-sm-9">
-                      <select class="form-control" id="edit_position" name="position" required>
-                        <option value="" selected id="posselect"></option>
+                      <select class="form-control" id="position" name="position" required>
+                        <option value="" selected>- Select -</option>
                         <?php
                           $sql = "SELECT * FROM positions";
                           $query = $conn->query($sql);
@@ -227,7 +227,7 @@
               <form class="form-horizontal" method="POST" action="candidates_photo.php" enctype="multipart/form-data">
                 <input type="hidden" class="id" name="id">
                 <div class="form-group">
-                    <label for="photo" class="col-sm-3 control-label">Photo</label>
+                    <label for="photo" class="col-sm-3 control-label">Photo (< 3MB)</label>
 
                     <div class="col-sm-9">
                       <input type="file" id="photo" name="photo" required accept="image/*">

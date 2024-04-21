@@ -34,6 +34,7 @@ if (isset($_POST['login'])) {
             && $captchaName == $captcha . '.jpeg'
         ) {
             // If match found, set session and redirect
+            
             $_SESSION['voter'] = $row['id'];
         }
     }

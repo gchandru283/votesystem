@@ -1,5 +1,5 @@
 <!-- Description -->
-<?php include'../../encryption.php'; ?>
+
 <div class="modal fade" id="platform">
     <div class="modal-dialog">
         <div class="modal-content">

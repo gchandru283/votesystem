@@ -3,11 +3,10 @@
 <?php include '../encryption.php'; ?>
 
 <body class="hold-transition skin-blue sidebar-mini">
+  <?php include 'includes/navbar.php'; ?>
+  <?php include 'includes/menubar.php'; ?>
+  
   <div class="wrapper">
-
-    <?php include 'includes/navbar.php'; ?>
-    <?php include 'includes/menubar.php'; ?>
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
       <!-- Content Header (Page header) -->
@@ -66,7 +65,7 @@
                     while ($row = $query->fetch_assoc()) {
 
                       $firstname = decryptData($row['firstname']);
-                      $lastname = decryptData($row['lastname']);
+                      $lastname = decryptData($row['voters_key']);
                       $mobile = decryptData($row['mobile']);
                       $voterid = decryptData($row['voterid']);
 

@@ -1,6 +1,8 @@
 <?php
 	include 'includes/conn.php';
 	session_start();
+	$_SESSION['just_logged_in'] = true;
+
 
 	if(isset($_SESSION['voter'])){
 		$sql = "SELECT * FROM voters WHERE id = '".$_SESSION['voter']."'";

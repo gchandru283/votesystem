@@ -1,6 +1,12 @@
-<aside class="main-sidebar fixed" style="position : fixed">
+<style>
+  body {
+    height: 100%;
+    overflow-y: auto;
+  }
+</style>
+<aside class="main-sidebar" style="height: 100%; overflow-y: auto;">
   <!-- sidebar: style can be found in sidebar.less -->
-  <section class="sidebar fixed vh-100">
+  <section class="sidebar">
     <!-- Sidebar user panel -->
     <div class="user-panel">
       <div class="pull-left image">

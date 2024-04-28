@@ -2,11 +2,11 @@
       include 'includes/header.php';
       include '../encryption.php';    ?>
 <body class="hold-transition skin-blue sidebar-mini">
+
   <?php include 'includes/navbar.php'; ?>
   <?php include 'includes/menubar.php'; ?>
+  
 <div class="wrapper">
-
-
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->

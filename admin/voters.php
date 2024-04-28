@@ -2,9 +2,17 @@
 <?php include 'includes/header.php'; ?>
 <?php include '../encryption.php'; ?>
 
+<?php include 'includes/navbar.php'; ?>
+<?php include 'includes/menubar.php'; ?>
+
+<style>
+  body {
+    height: 100%;
+    overflow-y: auto;
+  }
+</style>
+
 <body class="hold-transition skin-blue sidebar-mini">
-  <?php include 'includes/navbar.php'; ?>
-  <?php include 'includes/menubar.php'; ?>
   
   <div class="wrapper">
     <!-- Content Wrapper. Contains page content -->
@@ -65,7 +73,7 @@
                     while ($row = $query->fetch_assoc()) {
 
                       $firstname = decryptData($row['firstname']);
-                      $lastname = decryptData($row['voters_key']);
+                      $lastname = decryptData($row['lastname']);
                       $mobile = decryptData($row['mobile']);
                       $voterid = decryptData($row['voterid']);
 

@@ -1,6 +1,8 @@
 <?php
 	include 'includes/session.php';
-	include '../message/message.php';
+	include '../message/message.php'; ?>
+
+<?php
 
 	$return = 'home.php';
 	if(isset($_GET['return'])){

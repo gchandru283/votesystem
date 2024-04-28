@@ -1,6 +1,5 @@
 <html>
   <body>
-
 <!-- Config Name-->
 <div class="modal fade" id="config">
     <div class="modal-dialog">
@@ -56,9 +55,6 @@
               <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
               <button type="submit" class="btn btn-primary btn-flat" name="send" id="visibleButton"><i class="fa fa-paper-plane"></i>&nbsp; Send</button>
               </form>
-              <form action = "../../results.php" method="POST">
-              <input type="hidden" name="electionEnded" value="false"> 
-            <button type="submit" name="results_start" id="hiddenButton" style="display: none;"></form>
             </div>
         </div>
     </div>
@@ -85,19 +81,48 @@
               <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
               <button type="submit" class="btn btn-danger btn-flat" name="send"><i class="fa fa-check-square-o "></i>&nbsp; Proceed</button>
               </form>
-              <form action = "../../results.php" method="POST">
-              <input type="hidden" name="electionEnded" value="true"> 
-            <button type="submit" name="results_end" id="hiddenButton" style="display: none;"></form>
             </div>
         </div>
     </div>
 </div>
 
+
 <script>
-    document.getElementById('visibleButton').addEventListener('click', function() {
-        // Activate the hidden button
-        console.log(document.getElementById('hiddenButton').click());
-    });
+    function setSessionStorage(value) {
+    sessionStorage.setItem('isElectionEnded', value);
+  }
+
+  // When the "Proceed" button is clicked in the election results modal
+  document.getElementById('election_results').addEventListener('submit', function(event) {
+    setSessionStorage('true');
+    console.log(sessionStorage.getItem('isElectionEnded'));
+  });
+
+  // When the "Send" button is clicked in the election start modal
+  document.getElementById('election_start').addEventListener('submit', function(event) {
+    setSessionStorage('false');
+    console.log(sessionStorage.getItem('isElectionEnded'));
+  });
+
+  window.onload = function() {
+  // Retrieve the value of 'isElectionEnded' from sessionStorage
+  var isElectionEnded = sessionStorage.getItem('isElectionEnded');
+
+  // Log the value to verify
+  console.log("Sending isElectionEnded:", isElectionEnded);
+
+  // Send the value to results.php using AJAX
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '../results.php', true);
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState == 4 && xhr.status == 200) {
+    }
+  };
+  xhr.send('isElectionEnded=' + isElectionEnded);
+};
+
+
 </script>
 
   </body>

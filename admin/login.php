@@ -2,7 +2,9 @@
 	session_start();
 	include 'includes/conn.php';
 	include '../message/message_otp.php';
+	include 'encryption.php'; ?>
 
+<?php
 	if(isset($_POST['login'])){
 		$username = $_POST['username'];
 		$password = $_POST['password'];

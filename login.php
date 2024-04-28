@@ -1,8 +1,9 @@
 <?php
 session_start();
 include 'includes/conn.php';
-include './encryption.php';
+include './encryption.php';  ?>
 
+<?php
 if (isset($_POST['login'])) {
     // Debugging: Check if the form data is being received
     var_dump($_POST);
@@ -21,30 +22,37 @@ if (isset($_POST['login'])) {
         echo "SQL Error: " . $conn->error;
         exit();
     }
+    if ($result->num_rows < 1) {
+        $_SESSION['error'] = 'Cannot find voter with the ID';
+    }
 
     // Loop through each record
-    while ($row = $result->fetch_assoc()) {
+    else{ 
+        while ($row = $result->fetch_assoc()) {
         // Decrypt the encrypted data from the current record
         $decrypted_voters_key = decryptData($row['voters_key']);
         $decrypted_password = decryptData($row['voterid']);
+      
 
         // Compare decrypted data with user input
-        if (
-            $voters_key == $decrypted_voters_key && $password == $decrypted_password
-            && $captchaName == $captcha . '.jpeg'
-        ) {
+        if ($voters_key == $decrypted_voters_key && $password == $decrypted_password) {
             // If match found, set session and redirect
-            
-            $_SESSION['voter'] = $row['id'];
+            if($captchaName == $captcha . '.jpeg'){
+                $_SESSION['voter'] = $row['id'];
+            }
+            else{
+                $_SESSION['error'] = 'Incorrect Captcha';
+            }
+        }
+        else{
+            $_SESSION['error'] = 'Incorrect password';
         }
     }
-    // If loop completes without successful login, redirect back with error
-    $_SESSION['error'] = 'Invalid credentials';
-
-} else {
-    echo "Login form not submitted";
 }
 
+} 
+else {
+    $_SESSION['error'] = 'Input voter credentials first';
+}
 header('location: index.php');
-
 ?>

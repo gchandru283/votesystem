@@ -9,6 +9,11 @@
 			font-size: 30px;
 			margin-top: 25px;
 		}
+		
+		.login-box{
+			margin-top:40px ;
+			margin-bottom: 40px;
+		}
 
 		.sub-name {
 			color: #3A833A;
@@ -16,13 +21,10 @@
 		}
 
 		@media only screen and (min-width: 768px) {
-			.login-box {
-				transform: translateY(-8%);
-			}
-
+			
 			.register-logo {
 				font-size: 38px;
-				margin-top: 30px;
+				margin-top: 40px;
 			}
 
 			.sub-name {
@@ -33,12 +35,12 @@
 		}
 	</style>
 	<div class="register-logo">
-		<b>Online Voting System <span class="sub-name"> &nbsp;Registration form</span></b>
+		<b>Online Voting System <span class="sub-name"> &nbsp;User Registration form</span></b>
 	</div>
 	<div class="login-box">
 		<div class="register-box-body">
 			<p class="register-box-msg">Enter your details to register</p>
-			<form id="myForm" method="POST" enctype="multipart/form-data">
+			<form id="myForm" method="POST" enctype="multipart/form-data" action="validation.php">
 				<div class="form-group has-feedback">
 					<input type="text" class="form-control" name="fname" placeholder="First Name" required>
 					<span class="glyphicon glyphicon-user form-control-feedback" style="transform: scale(1.3); "></span>
@@ -71,7 +73,8 @@
 							<input type="file" class="form-control" id="photo" name="photo" required accept="image/*"
 								style="outline: none;cursor:pointer">
 							<span class="glyphicon glyphicon-user form-control-feedback"
-								style="transform: scale(1.3);"></span>
+								style="transform: scale(1.3);"></span><br>
+<p><b> Note : </b> This image will be used for verification before voting. So upload only passport size clear image (size between 300KB and 3 MB). </p>
 				</div>
 
 				<div class="form-group has-feedback text-center">
@@ -108,6 +111,16 @@
 			unset($_SESSION['error']);
 		}
 		?>
+		<?php
+		if (isset($_SESSION['success'])) {
+			echo "
+  				<div class='callout callout-success text-center mt20'>
+			  		<p>" . $_SESSION['success'] . "</p> 
+			  	</div>
+  			";
+			unset($_SESSION['success']);
+		}
+		?>
 		<div style="font-size: 16px; padding-top:10px">
 			<p>
 				<center><b>NOTE:</b> To login <a href="index.php">Click here</a>.
@@ -116,97 +129,8 @@
 		</div>
 	</div>
 
+	<?php include 'includes/footer1.php' ?>
 	<?php include 'includes/scripts.php' ?>
-
-
-	<?php
-	if ($_SERVER["REQUEST_METHOD"] == "POST") {
-		// Retrieve form data
-		$fname = $_POST['fname'];
-		$lname = $_POST['lname'];
-		$captcha = $_POST['captcha'];
-		$captchaName = $_POST['captchaName'];
-		$dob = $_POST['dob'];
-		$mobile = $_POST['mobile'];
-		$aadhar = $_POST['aadhar'];
-		$voterid = $_POST['voterid'];
-
-		// Calculate age from date of birth
-		$dob_date = DateTime::createFromFormat('Y-m-d', $dob);
-		if ($dob_date === false) {
-			// Handle invalid date format
-			echo "Invalid date format";
-		} else {
-			// Calculate age from date of birth
-			$today = new DateTime();
-			$interval = $today->diff($dob_date);
-			$age = $interval->y;
-}
-
-
-		if (isset($_FILES["photo"]["tmp_name"])) {
-            $check = getimagesize($_FILES["photo"]["tmp_name"]);
-            if ($check === false) {
-                $_SESSION['error'] = 'File is not an image.';
-                header('location: voters.php');
-                exit();
-            }
-        }
-        
-        // Check if image file is a valid image
-    if (isset($_FILES["photo"]["tmp_name"])) {
-        $check = getimagesize($_FILES["photo"]["tmp_name"]);
-        if ($check === false) {
-            $_SESSION['error'] = 'File is not an image.';
-            header('location: voters.php');
-            exit();
-        }
-    }
-
-        // Check file size (limit set to 1MB)
-    if ($_FILES["photo"]["size"] < 500000) { 
-        $_SESSION['error'] = "Sorry, your file is too small. Try uploading greater than 500 KB";
-    }
-    // Check file size (limit set to 1MB)
-    if ($_FILES["photo"]["size"] > 2000000) { 
-        $_SESSION['error'] = "Sorry, your file is too large. Try uploading less than 3 MB";
-    }
-    
-        $filename = $_FILES['photo']['name'];
-        $file_tmp = $_FILES['photo']['tmp_name'];
-        $new_filename = $voterid . '_' . $filename;
-
-		if (move_uploaded_file($file_tmp, 'uploads/' . $new_filename)) {
-			// Insert into database
-			$encrypted_firstname = encryptData($fname);
-			$encrypted_lastname = encryptData($lname);
-				$encrypted_dob = encryptData($dob);
-				$encrypted_voterid = encryptData($voterid);
-				$encrypted_aadhar = encryptData($aadhar);
-				$encrypted_mobile = encryptData($mobile);
-				$encrypted_age = encryptData($age);
-				if($captchaName == $captcha . '.jpeg'){
-					$sql = "INSERT INTO REGISTERED (firstname, lastname, dob, age, photo, mobile, aadhar, voterid) VALUES ('$encrypted_firstname', '$encrypted_lastname', '$encrypted_dob', '$encrypted_age', '$new_filename', '$encrypted_mobile', '$encrypted_aadhar', '$encrypted_voterid')";
-					if ($conn->query($sql) === TRUE) {
-					$_SESSION['error'] = "Registration Successful!";
-					
-				} else {
-					$_SESSION['error'] = "Error: " . $sql . "<br>" . $conn->error;
-					
-				}}
-				else{
-					$_SESSION['error'] = "Invalid Captcha";
-					
-				}
-				
-			} else {
-				$_SESSION['error'] = "Sorry, there was an error uploading your file.";
-			}
-		}
-		// Close connection
-		$conn->close();
-		
-		?>
 
 <script>
 	document.getElementById('uppercaseInput').addEventListener('input', function(event) {
@@ -242,13 +166,7 @@
         }
 		var captchaInput = document.getElementsByName('captcha')[0].value;
         var captchaName = document.getElementsByName('captchaName')[0].value;
-
-        if (captchaInput !== captchaName.replace('.jpeg', '')) {
-            alert('Invalid Captcha.');
-            event.preventDefault();
-            return;
-        }
-        alert('Registration successfully completed');
+        // alert('Registration successfully completed');
     });
 </script>
 

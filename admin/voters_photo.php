@@ -29,8 +29,8 @@ if (isset($_POST['upload'])) {
     }
     
     // Check file size (limit set to 1MB)
-    if ($_FILES["photo"]["size"] < 500000) { 
-        $_SESSION['error'] = "Sorry, your file is too small. Try uploading greater than 500 KB";
+    if ($_FILES["photo"]["size"] < 300000) { 
+        $_SESSION['error'] = "Sorry, your file is too small. Try uploading greater than 300 KB";
         header('location: voters.php');
         exit();
     }

@@ -4,7 +4,8 @@
     overflow-y: auto;
   }
 </style>
-<aside class="main-sidebar" style="height: 100%; overflow-y: auto;">
+
+<aside class="main-sidebar" style="height: 100vh; overflow-y: auto; position:fixed ">
   <!-- sidebar: style can be found in sidebar.less -->
   <section class="sidebar">
     <!-- Sidebar user panel -->

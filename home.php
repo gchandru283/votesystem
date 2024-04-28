@@ -10,6 +10,7 @@ include './encryption.php'; ?>
             <div class="container">
                 <!-- Main content -->
                 <section class="content">
+                    <center><h4 id="countdown"></h4><br></center>
                     <?php
                     $parse = parse_ini_file('admin/config.ini', FALSE, INI_SCANNER_RAW);
                     $title = $parse['election_title'];
@@ -296,7 +297,44 @@ include './encryption.php'; ?>
     });
 });
 
+// Function to update the countdown
+function updateCountdown() {
+    // Get the initial timestamp from localStorage
+    var initialTimestamp = localStorage.getItem('initialTimestamp');
+    if (!initialTimestamp) {
+        // If initialTimestamp is not set, set it to the current time
+        initialTimestamp = Math.floor(Date.now() / 1000); // Convert milliseconds to seconds
+        localStorage.setItem('initialTimestamp', initialTimestamp);
+    }
 
+    // Calculate the remaining time
+    var currentTime = Math.floor(Date.now() / 1000); // Convert milliseconds to seconds
+    var elapsedTime = currentTime - initialTimestamp;
+    var remainingTime = 4 * 60 + 60 - elapsedTime;
+
+    // Update the countdown element
+    var countdownElement = document.getElementById('countdown');
+    if (remainingTime > 0) {
+        var minutes = Math.floor(remainingTime / 60);
+        var seconds = remainingTime % 60;
+        countdownElement.textContent = "This session will expire in " + minutes + " minutes " + seconds + " seconds";
+    } else {
+        countdownElement.textContent = "Session expired";
+        window.location.href = 'logout.php';
+        // Clear the localStorage
+        localStorage.removeItem('initialTimestamp');
+    }
+}
+
+// Call updateCountdown function when the page loads
+updateCountdown();
+
+// Update countdown every second
+setInterval(updateCountdown, 1000);
+document.getElementById('logoutBtn').addEventListener('click', function() {
+    localStorage.removeItem('initialTimestamp');
+});
+</script>
 
     </script>
 </body>

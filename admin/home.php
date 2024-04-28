@@ -2,12 +2,15 @@
       include 'includes/slugify.php'; 
       include 'includes/header.php';
       include '../encryption.php'; ?>
-<body class="hold-transition skin-blue sidebar-mini">
-<div class="wrapper">
-
   <?php include 'includes/navbar.php'; ?>
   <?php include 'includes/menubar.php'; ?>
 
+ 
+
+<body class="hold-transition skin-blue sidebar-mini">
+  
+  
+  <div class="wrapper">
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
@@ -23,6 +26,7 @@
 
     <!-- Main content -->
     <section class="content">
+      <center><h4></h4><br></center>
       <?php
         if(isset($_SESSION['error'])){
           echo "
@@ -242,6 +246,7 @@
       var myChart = barChart.HorizontalBar(barChartData, barChartOptions)
       //document.getElementById('legend_'+rowid).innerHTML = myChart.generateLegend();
     });
+
     </script>
     <?php
   }

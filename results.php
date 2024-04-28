@@ -1,4 +1,6 @@
-<?php include 'includes/header.php'; 
+<?php 
+session_start();
+include 'includes/header.php'; 
       include 'includes/conn.php';
       include  'encryption.php';  ?>
 
@@ -43,10 +45,12 @@
 	</style>
 <?php
 
-$electionEnded = false; // Initialize the variable
+$electionEnded = isset($_SESSION['isElectionEnded']) ? $_POST['isElectionEnded'] : '';
+echo "isElectionEnded: " . ($electionEnded ? 'true' : 'false');
 
 function displayElectionResults($conn, $electionEnded) {
     // Function to generate the rows for election results
+
     function generateRow($conn) {
         $contents = '';
         $sql = "SELECT * FROM positions ORDER BY priority ASC";
@@ -119,23 +123,8 @@ function displayElectionResults($conn, $electionEnded) {
     echo $content;
 }
 
-// if (isset($_POST['results_start']) || isset($_POST['results_end'])) {
-//     // Check if the form data is being received
-//     if(isset($_POST['electionEnded'])){
-//         $electionEnded = $_POST['electionEnded'];
-//         displayElectionResults($conn, $electionEnded);
-//     } else {
-//         // Handle error
-//     }
-// }
-
- // Check if form data is being received
- if (isset($_POST['results_end'])) {
-    $electionEnded = $_POST['electionEnded'];
-}
-
 echo "Election Ended: " . ($electionEnded ? "True" : "False") . "<br>";
-displayElectionResults($conn, $electionEnded);
+//  displayElectionResults($conn, $electionEnded);
 
         // Check the value of $electionEnded to display the footer
         if (!$electionEnded) {
@@ -160,25 +149,25 @@ displayElectionResults($conn, $electionEnded);
         }
 
         if ($electionEnded) {
-            echo '<footer class="main-footer"style="background-color: #f5f5f5" >
-          <style>
-            @media (min-width: 768px) {
-              .main-footer {
-                width: 80vw;
-                transform: translate(-13%);
-              }
-            }
-          </style>
-          <div class="container">
-            <div class="pull-right hidden-xs">
-              <b>Online Voting System</b>
+                echo '<footer class="main-footer"style="background-color: #f5f5f5" >
+            <style>
+                @media (min-width: 768px) {
+                .main-footer {
+                    width: 80vw;
+                    transform: translate(-13%);
+                }
+                }
+            </style>
+            <div class="container">
+                <div class="pull-right hidden-xs">
+                <b>Online Voting System</b>
+                </div>
+                <strong> &copy; 2024 Done for<a> Final yr Project</a></strong>
+                <br>
+                <br>
             </div>
-            <strong> &copy; 2024 Done for<a> Final yr Project</a></strong>
-            <br>
-            <br>
-          </div>
-          <!-- /.container -->
-        </footer>';
+            <!-- /.container -->
+            </footer>';
         }
      
 

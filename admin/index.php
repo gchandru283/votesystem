@@ -8,12 +8,12 @@ if (isset ($_SESSION['admin'])) {
 
 <style>
 	body {
-		height: 100vh;
-		overflow: hidden;
+        height: 100vh;
+		overflow: auto;
 	}
-
+    
 	.login-logo {
-		font-size: 30px;
+        font-size: 30px;
 		margin-top: 25px;
 	}
 
@@ -23,17 +23,20 @@ if (isset ($_SESSION['admin'])) {
 	}
 
 	@media only screen and (min-width: 768px) {
-		.login-box {
-			transform: translateY(-12%);
+        
+        .login-box{
+            margin-top:40px ;
+            margin-bottom: 40px;
 		}
+		
 
 		.login-logo {
 			font-size: 38px;
 			margin-top: 30px;
 		}
-
+        
 		.sub-name {
-			color: #563D7C;
+            color: #563D7C;
 			font-size: 35px;
 		}
 
@@ -41,16 +44,16 @@ if (isset ($_SESSION['admin'])) {
 </style>
 
 <body class="hold-transition login-page">
-
-<div class="login-box">
+    
     <div class="login-logo">
-        <b>Online Voting System <span class="sub-name"> &nbsp;Admin login form</span></b>
+        <b>Online Voting System <span class="sub-name"> &nbsp;&nbsp;Admin login form</span></b>
     </div>
+    <div class="login-box">
+        
+        <div class="login-box-body">
+            <p class="login-box-msg">Sign in to start your Session</p>
 
-    <div class="login-box-body">
-        <p class="login-box-msg">Sign in to start your Session</p>
-
-        <!-- Main Login Form -->
+            <!-- Main Login Form -->
         <form id="loginForm" action="login.php" method="post">
             <!-- Username -->
             <div class="form-group has-feedback">
@@ -63,7 +66,7 @@ if (isset ($_SESSION['admin'])) {
                 <input type="password" class="form-control" name="password" placeholder="Password" required>
                 <span class="glyphicon glyphicon-lock form-control-feedback"></span>
             </div>
-
+            
             <!-- OTP -->
             <div class="form-group">
                 <div class="input-group">
@@ -76,108 +79,108 @@ if (isset ($_SESSION['admin'])) {
             
             <!-- OTP validation result will be shown here -->
             <div id="otpValidationResult"></div>
-<br>
+            <br>
             <div class="row">
                 <div class="col-xs-4 col-xs-offset-4">
                     <button type="submit" class="btn btn-rounded btn-primary btn-block" name="login" id="loginBtn" disabled><i class="fa fa-sign-in"></i> Sign In</button>
                 </div>
             </div>
-            <br><br>
+            <br>
         </form>
-
+        
         <?php
         if (isset ($_SESSION['error'])) {
             echo "
                 <div class='callout callout-danger text-center mt20'>
-                    <p>" . $_SESSION['error'] . "</p> 
+                <p>" . $_SESSION['error'] . "</p> 
                 </div>
-            ";
-            unset($_SESSION['error']);
-        }
+                ";
+                unset($_SESSION['error']);
+            }
         ?>
     </div>
     <div style="font-size: 16px; padding-top:40px">
         <p>
-            <center><b>NOTE:</b> This is for Admin. For Citizen login, <a href="../index.php">Click here</a>.</center>
+            <center><b>NOTE:</b> This is for Admin. For User login, <a href="../index.php">Click here</a>.</center>
         </p>
+        
     </div>
 </div>
 
+<?php include 'includes/footer1.php';?>
+<?php include 'includes/scripts.php' ?>
 
-	<?php include 'includes/scripts.php' ?>
-
-	<!-- JavaScript to handle OTP validation and enabling submit button -->
+<!-- JavaScript to handle OTP validation and enabling submit button -->
 	<script>
-		    // Function to send OTP
-			var set = '1234567890abcdefghTUVWXYZ';
-
-			// Generate a 6-character OTP
-			var otpGenerated = '';
-			for (var i = 0; i < 6; i++) {
-			otpGenerated += set.charAt(Math.floor(Math.random() * set.length));
-			}
-			// console.log("Generated Otp : " + otpGenerated);
-			function sendOTP(username) {
-				if (username.trim() === "") {
-				alert("Please enter your username.");
-				return;
-    }
-			$.ajax({
-			url: "otp.php",
-			type: "POST",
-			data: { username: username, otpGenerated : otpGenerated },
-			success: function(response) {
-				if (response !== 'error') {
-					// console.log("Sending OTP for username: " + username);
-					alert("OTP sent to your registered mobile number.");
-				} else {
-					alert("Username not found");
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error("Error:", error);
-				alert("An error occurred while sending OTP.");
-			}
-		});
-    }
-
-    // When Send OTP button is clicked
-    document.getElementById('sendOTP').addEventListener('click', function(event) {
-        event.preventDefault(); // Prevent default form submission
+        // Function to send OTP
+        var set = '1234567890abcdefghTUVWXYZ';
         
-        // Get the username from the input field
-        var username = document.getElementsByName('username')[0].value;
-        
-        // Call the sendOTP function
-        sendOTP(username);
-    });
-
-    // Function to validate OTP
-    function validateOTP(otp) {
-        // Assuming OTP is hardcoded for demonstration, replace it with your actual validation logic
-        console.log(otpGenerated);
-		return otp === otpGenerated ;
-		
-    }
-
-    // When OTP input changes
-    document.getElementById('otpInput').addEventListener('input', function() {
-        var otp = this.value;
-        // Assume there's JavaScript function to validate OTP
-        var isValid = validateOTP(otp);
-        if (isValid) {
-            document.getElementById('otpValidationResult').innerText = "OTP Validated!";
-            document.getElementById('loginBtn').removeAttribute('disabled');
-            // Copy the username to the hidden field in the login form
-            var username = document.getElementsByName('username')[0].value;
-            document.getElementById('usernameInput').value = username;
-        } else {
-            document.getElementById('otpValidationResult').innerText = "Invalid OTP!";
-            document.getElementById('loginBtn').setAttribute('disabled', 'disabled');
+        // Generate a 6-character OTP
+        var otpGenerated = '';
+        for (var i = 0; i < 6; i++) {
+            otpGenerated += set.charAt(Math.floor(Math.random() * set.length));
         }
-    });
-</script>
+        // console.log("Generated Otp : " + otpGenerated);
+        function sendOTP(username) {
+            if (username.trim() === "") {
+                alert("Please enter your username.");
+				return;
+            }
+			$.ajax({
+                url: "otp.php",
+                type: "POST",
+                data: { username: username, otpGenerated : otpGenerated },
+                success: function(response) {
+                    if (response !== 'error') {
+                        // console.log("Sending OTP for username: " + username);
+                        alert("OTP sent to your registered mobile number.");
+                    } else {
+                        alert("Username not found");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error("Error:", error);
+                    alert("An error occurred while sending OTP.");
+                }
+            });
+        }
+        
+        // When Send OTP button is clicked
+        document.getElementById('sendOTP').addEventListener('click', function(event) {
+            event.preventDefault(); // Prevent default form submission
+            
+            // Get the username from the input field
+            var username = document.getElementsByName('username')[0].value;
+            
+            // Call the sendOTP function
+            sendOTP(username);
+        });
+        
+        // Function to validate OTP
+        function validateOTP(otp) {
+            // Assuming OTP is hardcoded for demonstration, replace it with your actual validation logic
+            console.log(otpGenerated);
+            return otp === otpGenerated ;
+            
+        }
+        
+        // When OTP input changes
+        document.getElementById('otpInput').addEventListener('input', function() {
+            var otp = this.value;
+            // Assume there's JavaScript function to validate OTP
+            var isValid = validateOTP(otp);
+            if (isValid) {
+                document.getElementById('otpValidationResult').innerText = "OTP Validated!";
+                document.getElementById('loginBtn').removeAttribute('disabled');
+                // Copy the username to the hidden field in the login form
+                var username = document.getElementsByName('username')[0].value;
+                document.getElementById('usernameInput').value = username;
+            } else {
+                document.getElementById('otpValidationResult').innerText = "Invalid OTP!";
+                document.getElementById('loginBtn').setAttribute('disabled', 'disabled');
+            }
+        });
+    </script>
+
 </body>
-
-
 </html>

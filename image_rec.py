@@ -4,7 +4,7 @@ import face_recognition
 import sys
 
 def verify_faces_with_image(verification_image_path, timeout=20):
-    confidence_threshold = 0.4
+    confidence_threshold = 0.6
     resize_factor = 0.5  # Resize factor for images
     tolerance = 0.6  # Adjust tolerance level for face recognition
 
@@ -73,3 +73,5 @@ if __name__ == "__main__":
     image_path = sys.argv[1]
     match_found = verify_faces_with_image(image_path)
     print(match_found)
+
+    

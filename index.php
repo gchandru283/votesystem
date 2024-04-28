@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-if (isset ($_SESSION['admin'])) {
-	header('location: admin/home.php');
-}
+// if (isset ($_SESSION['admin'])) {
+// 	header('location: admin/home.php');
+// }
 
-if (isset ($_SESSION['voter'])) {
-	header('location: home.php');
-}
+// if (isset ($_SESSION['voter'])) {
+// 	header('location: home.php');
+// }
 ?>
 
 <?php include 'includes/header.php'; ?>
@@ -16,9 +16,9 @@ if (isset ($_SESSION['voter'])) {
 <body class="hold-transition login-page">
 
 	<style>
-		body {
-			height: 100vh;
-			overflow: hidden;
+		.login-box{
+			margin-top:40px ;
+			margin-bottom: 40px;
 		}
 
 		.login-logo {
@@ -32,10 +32,7 @@ if (isset ($_SESSION['voter'])) {
 		}
 
 		@media only screen and (min-width: 768px) {
-			body {
-				transform: translateY(-10%);
-			}
-
+						
 			.login-logo {
 				font-size: 38px;
 				margin-top: 30px;
@@ -48,10 +45,10 @@ if (isset ($_SESSION['voter'])) {
 		}
 	</style>
 
-	<div class="login-box">
-		<div class="login-logo">
-			<b>Online Voting System <span class="sub-name"> &nbsp;User login form</span></b>
-		</div>
+	<div class="login-logo">
+		<b>Online Voting System <span class="sub-name"> &nbsp;User/Citizen login form</span></b>
+	</div>
+		<div class="login-box">
 
 		<div class="login-box-body">
 			<p class="login-box-msg">Sign in to start your Session</p>
@@ -103,12 +100,14 @@ if (isset ($_SESSION['voter'])) {
 		<div style="font-size: 16px; padding-top:10px">
 			<p>
 				<center><b>NOTE:</b> To register <a href="register.php">Click here</a>.
-				</center>
-			</p>
-		</div>
+			</center>
+		</p>
+		<br>
 	</div>
+</div>
 
+	<?php include 'includes/footer1.php' ?>
 	<?php include 'includes/scripts.php' ?>
-</body>
+	</body>
 
 </html>

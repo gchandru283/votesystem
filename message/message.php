@@ -6,8 +6,8 @@ function sendMessages(){
     include '../encryption.php';
     include '../includes/conn.php';
     
-    $ultramsg_token = "5pjmvcqb8yo8nmt1"; // Your Ultramsg.com token
-    $instance_id = "instance83603"; // Your Ultramsg.com instance id
+    $ultramsg_token = "po91jk3b9ov9xtjn"; // Your Ultramsg.com token
+    $instance_id = "instance84218"; // Your Ultramsg.com instance id
 
     // Create a new UltraMsg\WhatsAppApi instance
     $client = new WhatsAppApi($ultramsg_token, $instance_id);
@@ -32,7 +32,7 @@ function sendMessages(){
             $body = "Dear User, this message is for e-Voting , Find your voter credentials below! \n\n 𝗩𝗼𝘁𝗲𝗿 𝗞𝗲𝘆 : " . $voters_key . "\n 𝗣𝗮𝘀𝘀𝘄𝗼𝗿𝗱 : " .  $hidden_voterid . "\n\nUse the following link to cast your vote Online. \n www.votesystem.com/login.php \n\nThank you!"; 
             $api = sendMessage($client, $to, $body);
         }
-        return "Messages sent successfully!";
+        return "Credentials messages sent successfully!";
     } else {
         return "Failed to fetch records from the database\n";
     }

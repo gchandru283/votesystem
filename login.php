@@ -22,9 +22,6 @@ if (isset($_POST['login'])) {
         echo "SQL Error: " . $conn->error;
         exit();
     }
-    if ($result->num_rows < 1) {
-        $_SESSION['error'] = 'Cannot find voter with the ID';
-    }
 
     // Loop through each record
     else{ 
@@ -45,7 +42,7 @@ if (isset($_POST['login'])) {
             }
         }
         else{
-            $_SESSION['error'] = 'Incorrect password';
+            $_SESSION['error'] = 'Incorrect User Credentials';
         }
     }
 }

@@ -9,11 +9,14 @@
 		$return = $_GET['return'];
 	}
 
-	if(isset($_POST['send'])){
+	if(isset($_POST['start'])){
+		$file = 'electionStatus.ini';
+		$content = 'isElectionEnded = false';
+		file_put_contents($file, $content);
 		$msg = sendMessages();
 		$_SESSION['success'] = $msg;
-		
 	}
+		
 	else{
 		$_SESSION['error'] = "Error sending messages";
 	}

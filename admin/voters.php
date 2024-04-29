@@ -74,7 +74,7 @@
 
                       $firstname = decryptData($row['firstname']);
                       $lastname = decryptData($row['lastname']);
-                      $mobile = decryptData($row['mobile']);
+                      $mobile = decryptData($row['voters_key']);
                       $voterid = decryptData($row['voterid']);
 
                       $image = (!empty($row['photo'])) ? '../uploads/' . $row['photo'] : '../images/profile.jpg';

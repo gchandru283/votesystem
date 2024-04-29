@@ -1,6 +1,9 @@
 <?php include 'includes/session.php'; ?>
 <?php include 'includes/header.php';
-include './encryption.php'; ?>
+include './encryption.php'; 
+$parse = parse_ini_file('admin/electionStatus.ini', FALSE, INI_SCANNER_RAW);
+$electionEnded = $parse['isElectionEnded'];
+?>
 
 
 <body class="hold-transition skin-blue layout-top-nav">
@@ -26,7 +29,7 @@ include './encryption.php'; ?>
                                 <div class="alert alert-danger alert-dismissible">
                                     <button type="button" class="close" data-dismiss="alert"
                                         aria-hidden="true">&times;</button>
-                                    <ul>
+                                    <h4>
                                         <?php
                                         foreach ($_SESSION['error'] as $error) {
                                             echo "
@@ -34,7 +37,7 @@ include './encryption.php'; ?>
                                             ";
                                         }
                                         ?>
-                                    </ul>
+                                    </h4>
                                 </div>
                                 <?php
                                 unset($_SESSION['error']);
@@ -52,14 +55,15 @@ include './encryption.php'; ?>
                             }
 
                             ?>
-
+        
                             <div class="alert alert-danger alert-dismissible" id="alert" style="display:none;">
                                 <button type="button" class="close" data-dismiss="alert"
                                     aria-hidden="true">&times;</button>
                                 <span class="message"></span>
                             </div>
 
-                            <?php
+                            <?php 
+                            if ($electionEnded == 'false'){
                             $sql = "SELECT * FROM votes WHERE voters_id = '" . $voter['id'] . "'";
                             $vquery = $conn->query($sql);
                             if ($vquery->num_rows > 0) {
@@ -162,6 +166,12 @@ include './encryption.php'; ?>
                                 <!-- End Voting Ballot -->
                                 <?php
                             }
+                        }
+
+                        else{
+                            echo '<br><center><h3 style="line-height:1.3;font-weight:550"> Election already Ended! You are late to cast your vote..</h3>
+                            <br><img src="images/sad_face.png" style="height:100px;width:100px"/></center>';
+                        }
                             ?>
                         </div>
                     </div>

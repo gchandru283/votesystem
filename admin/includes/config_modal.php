@@ -53,7 +53,7 @@
             </div>
             <div class="modal-footer">
               <button type="button" class="btn btn-default btn-flat pull-left" data-dismiss="modal"><i class="fa fa-close"></i> Close</button>
-              <button type="submit" class="btn btn-primary btn-flat" name="send" id="visibleButton"><i class="fa fa-paper-plane"></i>&nbsp; Send</button>
+              <button type="submit" class="btn btn-primary btn-flat" name="start" id="visibleButton"><i class="fa fa-paper-plane"></i>&nbsp; Send</button>
               </form>
             </div>
         </div>
@@ -103,25 +103,6 @@
     setSessionStorage('false');
     console.log(sessionStorage.getItem('isElectionEnded'));
   });
-
-  window.onload = function() {
-  // Retrieve the value of 'isElectionEnded' from sessionStorage
-  var isElectionEnded = sessionStorage.getItem('isElectionEnded');
-
-  // Log the value to verify
-  console.log("Sending isElectionEnded:", isElectionEnded);
-
-  // Send the value to results.php using AJAX
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', '../results.php', true);
-  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState == 4 && xhr.status == 200) {
-    }
-  };
-  xhr.send('isElectionEnded=' + isElectionEnded);
-};
-
 
 </script>
 

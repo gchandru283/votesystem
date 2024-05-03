@@ -16,28 +16,10 @@
           </div>
         </div>
         <div class="modal-footer">
-          <button type="button" id="verify_button" class="btn btn-default btn-flat" name="verify" disabled></button>
+          <button type="button" id="verify_button" class="btn btn-default btn-flat" name="verify" disabled>Please wait</button>
         </form>
       </div>
     </div>
   </div>
 </div>
 
-<script>
-  // Immediately invoked function expression (IIFE) to start verification automatically
-  (function() {
-    var button = document.getElementById("verify_button");
-    var verificationMessage = document.getElementById("verification_message");
-    var countdown = 42;
-    button.disabled = true;
-    button.innerHTML = "Please wait " + countdown + "s";
-
-    var interval = setInterval(function() {
-      countdown--;
-      button.innerHTML = "Please wait " + countdown + "s";
-      if (countdown <= 0) {
-        button.innerHTML = "Please wait 0s";
-      }
-    }, 1000);
-  })();
-</script>

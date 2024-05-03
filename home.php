@@ -244,7 +244,7 @@ $electionEnded = $parse['isElectionEnded'];
 
         $(function () {
     // Initially disable the submit button
-    $('#submitBtn').prop('disabled', true);
+    $('#submitBtn').prop('disabled', false);
 
     // Add click event listener to trigger verification
     $('a.open-modal-link').click(function(e) {

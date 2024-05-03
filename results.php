@@ -60,7 +60,11 @@ function displayElectionResults($conn, $electionEnded) {
             $content .= '</table><br><br><br>'; // Gap after each position
         }
     } else {
-        $content .= '<br><table class="table table-stripped"><tr><td colspan="2" style="font-size:18px; text-align:center; border:0px; font-weight:bold;">Election not yet ended.</tr></table>';
+        $content .= '<br><table class="table table-stripped"><tr>
+                     <td colspan="2" style="font-size:18px; text-align:center; border:0px; font-weight:bold;">
+                     Election not yet ended.</tr></table>
+                     <br><br>
+                     <center><h4 style="color:black">Elections will be over by 6.00 pm.. Come back after 6.00 pm to view the results.</h4></center>';
     }
 
     $content .= '</div></div>';
@@ -103,7 +107,7 @@ echo '
 
             if ($electionEnded == 'false'){ echo '
             .container1{
-                transform : translateY(200%)
+                transform : translateY(50%)
             }';
         }
             else{
